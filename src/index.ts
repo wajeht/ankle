@@ -4,7 +4,7 @@ import compression from 'compression';
 import fs from 'fs';
 import ejs from 'ejs';
 import path from 'path';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import expressLayouts from 'express-ejs-layouts';
 import marked from 'marked';
 
@@ -33,7 +33,7 @@ app.use(expressLayouts);
 
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
 	fs.readdir(path.join(__dirname, 'posts'), (err, files) => {
 		if (err) return res.status(500).send('Failed to load posts.');
 		const posts = files
@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 	});
 });
 
-app.get('/:post', (req, res) => {
+app.get('/:post', (req: Request, res: Response) => {
 	const postPath = path.join(__dirname, 'posts', `${req.params.post}.md`);
 	fs.readFile(postPath, 'utf8', (err, data) => {
 		if (err) return res.status(404).send('Post not found!');
@@ -55,9 +55,11 @@ app.get('/:post', (req, res) => {
 	});
 });
 
-app.use((req, res, _next) => res.status(404).send('not found'));
+app.use((req: Request, res: Response, _next: NextFunction) => res.status(404).send('not found'));
 
-app.use((err, req, res, next) => res.status(500).send('error'));
+app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
+	res.status(500).send('error'),
+);
 
 const server = app.listen(PORT, () => {
 	console.log(`Server was started on http://localhost:${PORT}`);
