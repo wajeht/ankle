@@ -1,6 +1,11 @@
----
-title: week 1
-date: 2023-02-26
----
+## Summery
 
-Amet facilisi eget massa ad etiam sollicitudin
+A brief description of what happened.
+
+## Progress
+
+- gains
+
+## Pain
+
+- zero
