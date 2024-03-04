@@ -2,11 +2,11 @@
 	"name": "ankle",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "/dist/src/index.js",
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsx watch --clear-screen=false ./src/index.ts",
-		"start": "NODE_ENV=production && node ./dist/index.js",
+		"start": "NODE_ENV=production && node ./dist/src/index.js",
 		"format:check": "prettier --check .",
 		"format": "prettier --write .",
 		"lint:check": "eslint .",

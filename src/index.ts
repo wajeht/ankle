@@ -24,17 +24,17 @@ app.use(
 
 app.use(cors());
 app.use(compression());
-app.use(express.static(path.join(process.cwd(), 'public'), { maxAge: '24h' }));
+app.use(express.static(path.resolve(path.join(process.cwd(), 'public')), { maxAge: '24h' }));
 app.engine('html', ejs.renderFile);
 app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views', 'pages'));
-app.set('layout', path.join(__dirname, 'views', 'layouts', 'main.html'));
+app.set('views', path.resolve(path.join(process.cwd(), 'src', 'views', 'pages')));
+app.set('layout', path.resolve(path.join(process.cwd(), 'src', 'views', 'layouts', 'main.html')));
 app.use(expressLayouts);
 
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
 app.get('/', (req: Request, res: Response) => {
-	fs.readdir(path.join(__dirname, 'posts'), (err, files) => {
+	fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')), (err, files) => {
 		if (err) return res.status(500).send('Failed to load posts.');
 		const posts = files
 			.filter((file) => file.endsWith('.md'))
@@ -48,7 +48,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/:post', (req: Request, res: Response) => {
-	const postPath = path.join(__dirname, 'posts', `${req.params.post}.md`);
+	const postPath = path.resolve(path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`));
 	fs.readFile(postPath, 'utf8', (err, data) => {
 		if (err) return res.status(404).send('Post not found!');
 		return res.render('post.html', { title: req.params.post, content: marked.marked(data) });
