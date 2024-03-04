@@ -37,7 +37,7 @@ app.get('/healthz', (req, res) => {
 	return res.status(200).send('ok');
 });
 
-app.get('/', async (req, res) => {
+app.get('/', async (req, res, next) => {
 	try {
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
@@ -46,13 +46,13 @@ app.get('/', async (req, res) => {
 				title: path.basename(file, '.md'),
 				file,
 			}));
-		return res.render('posts.html', { title: 'Posts', posts });
+		return res.render('posts.html', { title: 'ankle.jaw.dev', posts });
 	} catch (err) {
-		return res.status(500).send('Failed to load posts.');
+		next(err);
 	}
 });
 
-app.get('/:post', async (req, res) => {
+app.get('/posts/:post', async (req, res, next) => {
 	try {
 		const postPath = path.resolve(
 			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
@@ -60,16 +60,16 @@ app.get('/:post', async (req, res) => {
 		const data = await fs.readFile(postPath, 'utf8');
 		return res.render('post.html', { title: req.params.post, content: marked.marked(data) });
 	} catch (err) {
-		return res.status(404).send('Post not found!');
+		next(err);
 	}
 });
 
 app.use((req: Request, res: Response, _next: NextFunction) => {
-	return res.status(404).send('not found');
+	return res.status(404).render('not-found.html', { title: 'Not found' });
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-	return res.status(500).send('error');
+	return res.status(500).render('error.html', { title: 'Error' });
 });
 
 const server = app.listen(PORT, () => {
