@@ -1,7 +1,7 @@
 import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
-import fs from 'fs';
+import fs from 'fs/promises';
 import ejs from 'ejs';
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
@@ -35,33 +35,40 @@ app.use(expressLayouts);
 
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
-app.get('/', (req: Request, res: Response) => {
-	fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')), (err, files) => {
-		if (err) return res.status(500).send('Failed to load posts.');
+app.get('/', async (req, res) => {
+	try {
+		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
 			.filter((file) => file.endsWith('.md'))
-			.map((file) => {
-				const title = path.basename(file, '.md');
-				return { title, file };
-			});
-
-		res.render('posts.html', { title: 'posts', posts });
-	});
+			.map((file) => ({
+				title: path.basename(file, '.md'),
+				file,
+			}));
+		return res.render('posts.html', { title: 'Posts', posts });
+	} catch (err) {
+		return res.status(500).send('Failed to load posts.');
+	}
 });
 
-app.get('/:post', (req: Request, res: Response) => {
-	const postPath = path.resolve(path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`));
-	fs.readFile(postPath, 'utf8', (err, data) => {
-		if (err) return res.status(404).send('Post not found!');
-		return res.render('post.html', { title: req.params.post, content: marked.marked(data) });
-	});
+app.get('/:post', async (req, res) => {
+	try {
+		const postPath = path.resolve(
+			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
+		);
+		const data = await fs.readFile(postPath, 'utf8');
+		res.render('post.html', { title: req.params.post, content: marked.marked(data) });
+	} catch (err) {
+		return res.status(404).send('Post not found!');
+	}
 });
 
-app.use((req: Request, res: Response, _next: NextFunction) => res.status(404).send('not found'));
+app.use((req: Request, res: Response, _next: NextFunction) => {
+	return res.status(404).send('not found');
+});
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
-	res.status(500).send('error'),
-);
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+	return res.status(500).send('error');
+});
 
 const server = app.listen(PORT, () => {
 	console.log(`Server was started on http://localhost:${PORT}`);
