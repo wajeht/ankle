@@ -9,6 +9,8 @@
 		"start": "NODE_ENV=production && node ./dist/src/index.js",
 		"format:check": "prettier --check .",
 		"format": "prettier --write .",
+		"test": "vitest --run",
+		"test:watch": "vitest",
 		"lint:check": "eslint .",
 		"lint": "eslint --fix ."
 	},
@@ -37,6 +39,8 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.3",
 		"prettier": "^3.2.5",
-		"tsx": "^4.7.1"
+		"supertest": "^6.3.4",
+		"tsx": "^4.7.1",
+		"vitest": "^1.3.1"
 	}
 }
