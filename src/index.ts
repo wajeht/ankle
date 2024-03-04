@@ -33,7 +33,9 @@ app.set('views', path.resolve(path.join(process.cwd(), 'src', 'views', 'pages'))
 app.set('layout', path.resolve(path.join(process.cwd(), 'src', 'views', 'layouts', 'main.html')));
 app.use(expressLayouts);
 
-app.get('/healthz', (req, res) => res.status(200).send('ok'));
+app.get('/healthz', (req, res) => {
+	return res.status(200).send('ok');
+});
 
 app.get('/', async (req, res) => {
 	try {
@@ -56,7 +58,7 @@ app.get('/:post', async (req, res) => {
 			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
 		);
 		const data = await fs.readFile(postPath, 'utf8');
-		res.render('post.html', { title: req.params.post, content: marked.marked(data) });
+		return res.render('post.html', { title: req.params.post, content: marked.marked(data) });
 	} catch (err) {
 		return res.status(404).send('Post not found!');
 	}
