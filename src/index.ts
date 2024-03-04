@@ -1,12 +1,11 @@
 import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
-import fs from 'fs/promises';
 import ejs from 'ejs';
 import path from 'path';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import expressLayouts from 'express-ejs-layouts';
-import marked from 'marked';
+import { errorHandler, notFoundHandler, routes } from './views/routes';
 
 const PORT = process.env.PORT || 8080;
 
@@ -33,44 +32,9 @@ app.set('views', path.resolve(path.join(process.cwd(), 'src', 'views', 'pages'))
 app.set('layout', path.resolve(path.join(process.cwd(), 'src', 'views', 'layouts', 'main.html')));
 app.use(expressLayouts);
 
-app.get('/healthz', (req, res) => {
-	return res.status(200).send('ok');
-});
-
-app.get('/', async (req, res, next) => {
-	try {
-		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
-		const posts = files
-			.filter((file) => file.endsWith('.md'))
-			.map((file) => ({
-				title: path.basename(file, '.md'),
-				file,
-			}));
-		return res.render('posts.html', { title: 'ankle.jaw.dev', posts });
-	} catch (err) {
-		next(err);
-	}
-});
-
-app.get('/posts/:post', async (req, res, next) => {
-	try {
-		const postPath = path.resolve(
-			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
-		);
-		const data = await fs.readFile(postPath, 'utf8');
-		return res.render('post.html', { title: req.params.post, content: marked.marked(data) });
-	} catch (err) {
-		next(err);
-	}
-});
-
-app.use((req: Request, res: Response, _next: NextFunction) => {
-	return res.status(404).render('not-found.html', { title: 'Not found' });
-});
-
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-	return res.status(500).render('error.html', { title: 'Error' });
-});
+app.use(routes);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 const server = app.listen(PORT, () => {
 	console.log(`Server was started on http://localhost:${PORT}`);
