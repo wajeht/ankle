@@ -13,11 +13,13 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 app.use(
-	helmet.contentSecurityPolicy({
-		directives: {
-			...helmet.contentSecurityPolicy.getDefaultDirectives(),
-			'default-src': ["'self'", 'plausible.jaw.dev'],
-			'script-src': ["'self'", "'unsafe-inline'", 'plausible.jaw.dev'],
+	helmet({
+		contentSecurityPolicy: {
+			directives: {
+				...helmet.contentSecurityPolicy.getDefaultDirectives(),
+				'default-src': ["'self'", 'plausible.jaw.dev'],
+				'script-src': ["'self'", "'unsafe-inline'", 'plausible.jaw.dev'],
+			},
 		},
 	}),
 );
