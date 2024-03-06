@@ -5,7 +5,7 @@ import ejs from 'ejs';
 import path from 'path';
 import express from 'express';
 import expressLayouts from 'express-ejs-layouts';
-import { errorHandler, notFoundHandler, routes } from './views/routes';
+import { errorHandler, localVariables, notFoundHandler, routes } from './views/routes';
 
 const PORT = process.env.PORT || 8080;
 
@@ -23,6 +23,7 @@ app.use(
 	}),
 );
 
+app.use(localVariables);
 app.use(cors());
 app.use(compression());
 app.use(express.static(path.resolve(path.join(process.cwd(), 'public')), { maxAge: '24h' }));

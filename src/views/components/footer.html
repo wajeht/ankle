@@ -1,6 +1,6 @@
 <footer>
 	<small
-		>Copyright © <span id="year"></span>. Made with ❤️ by
+		>Copyright © <%= app.copyRightYear %>. Made with ❤️ by
 		<a
 			href="https://github.com/wajeht/ankle"
 			title="https://github.com/wajeht/ankle"
@@ -9,9 +9,3 @@
 		></small
 	>
 </footer>
-
-<script>
-	const year = document.getElementById('year');
-	const currentYear = new Date().getFullYear();
-	year.innerText = currentYear;
-</script>

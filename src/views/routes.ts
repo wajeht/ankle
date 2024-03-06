@@ -41,6 +41,17 @@ routes.get('/posts/:post', async (req, res, next) => {
 	}
 });
 
+export function localVariables(req: Request, res: Response, next: NextFunction) {
+	res.locals.app = {
+		env: process.env.NODE_ENV,
+		title: 'ankle.jaw.dev',
+		headerText: '🩼 Broken Ankle',
+		description: 'my broken ankle journey',
+		copyRightYear: new Date().getFullYear(),
+	};
+	next();
+}
+
 export function notFoundHandler(req: Request, res: Response, _next: NextFunction) {
 	return res.status(404).render('not-found.html', { title: 'Not found' });
 }
