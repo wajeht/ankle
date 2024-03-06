@@ -17,7 +17,8 @@ routes.get('/', async (req, res, next) => {
 			.map((file) => ({
 				title: path.basename(file, '.md'),
 				file,
-			}));
+			}))
+			.reverse();
 		return res.render('posts.html', { title: 'ankle.jaw.dev', posts });
 	} catch (err) {
 		next(err);
