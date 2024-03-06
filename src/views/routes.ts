@@ -30,7 +30,11 @@ routes.get('/posts/:post', async (req, res, next) => {
 			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
 		);
 		const data = await fs.readFile(postPath, 'utf8');
-		return res.render('post.html', { title: req.params.post, content: marked.marked(data) });
+		return res.render('post.html', {
+			title: req.params.post,
+			content: marked.marked(data),
+			layout: '../layouts/post.html',
+		});
 	} catch (err) {
 		next(err);
 	}
