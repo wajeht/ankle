@@ -27,7 +27,7 @@ routes.get('/', async (req, res, next) => {
 				file,
 			}))
 			.reverse();
-		return res.render('posts.html', { title: 'ankle.jaw.dev', path: req.path, posts });
+		return res.render('home.html', { title: 'ankle.jaw.dev', path: req.path, posts });
 	} catch (err) {
 		next(err);
 	}
