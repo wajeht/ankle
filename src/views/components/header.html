@@ -1,6 +1,23 @@
-<header>
-	<a href="/">
-		<h1 class="rainbow-text"><%= app.headerText %></h1>
-	</a>
-	<marquee width="250"><%= app.description %></marquee>
-</header>
+<div>
+	<!-- header -->
+	<header>
+		<!-- header text -->
+		<a href="/">
+			<h1 class="rainbow-text"><%= app.headerText %></h1>
+		</a>
+		<marquee width="250"><%= app.description %></marquee>
+
+		<!-- nav -->
+		<nav>
+			<ul>
+				<li><a href="/" class="<%- path === '/' ? 'active' : ''%>">home</a></li>
+				|
+				<li>
+					<a href="/guest-book" class="<%- path === '/guest-book' ? 'active' : ''%>">guest book</a>
+				</li>
+				|
+				<li><a href="/gallery" class="<%- path === '/gallery' ? 'active' : ''%>">gallery</a></li>
+			</ul>
+		</nav>
+	</header>
+</div>

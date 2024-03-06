@@ -50,14 +50,26 @@ a {
 	text-decoration: none;
 }
 
+.active {
+	font-weight: bold;
+	animation: rainbow 5s infinite;
+}
+
+a:hover {
+	text-decoration: underline;
+	animation: rainbow 5s infinite;
+}
+
+header nav ul {
+	display: flex;
+	gap: 20px;
+
+	list-style: none;
+}
+
 header a,
 footer a {
 	color: #ffffff;
-}
-
-header a:hover,
-footer a:hover {
-	color: #cccccc;
 }
 
 @keyframes rainbow {
@@ -85,6 +97,7 @@ footer a:hover {
 }
 
 .rainbow-text {
+	font-weight: bold;
 	animation: rainbow 5s infinite;
 }
 

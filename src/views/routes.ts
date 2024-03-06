@@ -9,6 +9,14 @@ routes.get('/healthz', (req, res) => {
 	return res.status(200).send('ok');
 });
 
+routes.get('/guest-book', (req, res) => {
+	return res.render('guest-book.html', { title: 'guest book', path: req.path });
+});
+
+routes.get('/gallery', (req, res) => {
+	return res.render('gallery.html', { title: 'guest book', path: req.path });
+});
+
 routes.get('/', async (req, res, next) => {
 	try {
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
@@ -19,7 +27,7 @@ routes.get('/', async (req, res, next) => {
 				file,
 			}))
 			.reverse();
-		return res.render('posts.html', { title: 'ankle.jaw.dev', posts });
+		return res.render('posts.html', { title: 'ankle.jaw.dev', path: req.path, posts });
 	} catch (err) {
 		next(err);
 	}
@@ -35,6 +43,7 @@ routes.get('/posts/:post', async (req, res, next) => {
 			title: req.params.post,
 			post: marked.marked(data),
 			layout: '../layouts/post.html',
+			path: req.path,
 		});
 	} catch (err) {
 		next(err);
@@ -53,11 +62,11 @@ export function localVariables(req: Request, res: Response, next: NextFunction) 
 }
 
 export function notFoundHandler(req: Request, res: Response, _next: NextFunction) {
-	return res.status(404).render('not-found.html', { title: 'Not found' });
+	return res.status(404).render('not-found.html', { title: 'Not found', path: req.path });
 }
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-	return res.status(500).render('error.html', { title: 'Error' });
+	return res.status(500).render('error.html', { title: 'Error', path: req.path });
 }
 
 export { routes };
