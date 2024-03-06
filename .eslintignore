@@ -1,6 +1,7 @@
 public/libs
 public/libs/*
 public/lib*
+public/js*
 public/client.js
 dist/*
 dist
