@@ -14,7 +14,7 @@ routes.get('/guest-book', (req, res) => {
 });
 
 routes.get('/gallery', (req, res) => {
-	return res.render('gallery.html', { title: 'guest book', path: req.path });
+	return res.render('gallery.html', { title: 'gallery', path: req.path });
 });
 
 routes.get('/', async (req, res, next) => {
