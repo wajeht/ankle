@@ -1,25 +1,95 @@
+* {
+	font-family: 'Courier New', Courier, monospace;
+}
+
+html {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 100 100'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='10' fill='white'%3E🩼%3C/text%3E%3C/svg%3E");
+	background-size: 100px;
+	background-repeat: repeat;
+	background-color: #eeeeee;
+}
+
 body {
 	display: flex;
 	flex-direction: column;
 
-	/* calc(100vh - (padding-top 20px + padding-bottom 20px) */
-	min-height: calc(100vh - 40px);
-	max-width: 500px;
+	min-height: 100vh;
+	max-width: 800px;
 	margin: 0 auto;
 
-	padding: 20px;
+	padding: 0px 20px 0px 20px;
 }
 
 header {
 	flex-grow: 0;
 	text-align: center;
+
+	padding: 20px;
+
+	color: white;
+	background-color: black;
 }
 
 main {
 	flex-grow: 1;
+	background-color: white;
+	padding: 20px;
 }
 
 footer {
 	flex-grow: 0;
 	text-align: center;
+
+	padding: 20px;
+
+	color: white;
+	background-color: black;
+}
+
+a {
+	text-decoration: none;
+}
+
+header a,
+footer a {
+	color: #ffffff;
+}
+
+header a:hover,
+footer a:hover {
+	color: #cccccc;
+}
+
+@keyframes rainbow {
+	0% {
+		color: #ff0000;
+	}
+	16% {
+		color: #ff7f00;
+	}
+	32% {
+		color: #ffff00;
+	}
+	48% {
+		color: #00ff00;
+	}
+	64% {
+		color: #0000ff;
+	}
+	80% {
+		color: #4b0082;
+	}
+	100% {
+		color: #8a2be2;
+	}
+}
+
+.rainbow-text {
+	animation: rainbow 5s infinite;
+}
+
+@media screen and (max-width: 600px) {
+	body {
+		padding: 0;
+	}
 }
