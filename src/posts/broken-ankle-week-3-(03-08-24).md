@@ -3,16 +3,16 @@
 - **broken at:** 02/17/2024
 - **written at:** 03/08/2024
 
-it has been 21 days (3 weeks) since ankle was broken.
+It has been 21 days (3 weeks) since ankle was broken.
 
-## 📃 Summery
+## 📃 Summary
 
 A brief description of what happened.
 
 ## 📈 Progress
 
-- gains
+- what progress were made
 
 ## 😣 Pain
 
-- zero
+- pain level this week

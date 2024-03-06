@@ -1,5 +1,7 @@
 <div>
-	<% posts.forEach(post=> { %>
-	<h2><a href="/posts/<%= post.title %>" title="<%= post.title %>"><%= post.title %></a></h2>
-	<% }); %>
+	<% for (let i = 0; i < posts.length; i++) { %>
+	<h2>
+		<a href="/posts/<%= posts[i].title %>" title="<%= posts[i].title %>"><%= posts[i].title %></a>
+	</h2>
+	<% } %>
 </div>

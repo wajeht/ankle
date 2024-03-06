@@ -12,6 +12,7 @@ body {
 
 header {
 	flex-grow: 0;
+	text-align: center;
 }
 
 main {
@@ -20,4 +21,5 @@ main {
 
 footer {
 	flex-grow: 0;
+	text-align: center;
 }

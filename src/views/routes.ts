@@ -33,7 +33,7 @@ routes.get('/posts/:post', async (req, res, next) => {
 		const data = await fs.readFile(postPath, 'utf8');
 		return res.render('post.html', {
 			title: req.params.post,
-			content: marked.marked(data),
+			post: marked.marked(data),
 			layout: '../layouts/post.html',
 		});
 	} catch (err) {

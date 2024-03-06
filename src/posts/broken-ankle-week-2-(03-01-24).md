@@ -5,14 +5,14 @@
 
 it has been 14 days (2 weeks) since ankle was broken.
 
-## 📃 Summery
+## 📃 Summary
 
 A brief description of what happened.
 
 ## 📈 Progress
 
-- gains
+- what progress were made
 
 ## 😣 Pain
 
-- zero
+- pain level this week
