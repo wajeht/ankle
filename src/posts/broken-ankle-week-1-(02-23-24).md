@@ -1,18 +1,18 @@
-## Broken Ankle - Week 1 - 02/23/2024
+## 🩼 Broken Ankle - Week 1 - 02/23/2024
 
 - **broken at:** 02/17/2024
 - **written at:** 02/23/2024
 
 it has been 7 days since ankle was broken.
 
-## Summery
+## 📃 Summery
 
 A brief description of what happened.
 
-## Progress
+## 📈 Progress
 
 - gains
 
-## Pain
+## 😣 Pain
 
 - zero
