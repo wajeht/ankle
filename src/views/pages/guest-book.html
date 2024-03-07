@@ -22,10 +22,27 @@
 		<div style="display: flex; flex-direction: column">
 			<div style="display: flex; align-items: center; gap: 10px">
 				<h4 style="margin: 0 5px"><%= users[i].emoji %> <%= users[i].name %></h4>
-				<small><%= users[i].created_at %></small>
+				<small> <%= users[i].created_at %> </small>
 			</div>
 			<p><%= users[i].message %></p>
 		</div>
 		<% } %>
 	</div>
 </div>
+
+<script>
+	async function getUserIp() {
+		return (
+			await fetch('https://ip.jaw.dev/', {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+		).json();
+	}
+
+	document.addEventListener('DOMContentLoaded', async (event) => {
+		const ip = await getUserIp();
+		document.getElementById('name').value = ip.ip;
+	});
+</script>
