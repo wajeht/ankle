@@ -34,7 +34,14 @@ routes.get('/guest-book', async (req, res, next) => {
 
 		users.forEach((user: any) => {
 			user.emoji = emojis[Math.floor(Math.random() * emojis.length)];
-			user.created_at = user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + user.created_at.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+			user.created_at =
+				user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) +
+				' ' +
+				user.created_at.toLocaleDateString('en-US', {
+					month: '2-digit',
+					day: '2-digit',
+					year: 'numeric',
+				});
 		});
 
 		return res.render('guest-book.html', { title: 'guest book', path: req.path, users });
