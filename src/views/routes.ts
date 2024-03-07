@@ -26,23 +26,18 @@ routes.get('/guest-book', async (req, res, next) => {
 			"🦹‍♀️", "🦹‍♂️", "🧙‍♀️", "🧙‍♂️", "🧚‍♀️",
 			"🧚‍♂️", "🧛‍♀️", "🧛‍♂️", "🧜‍♀️", "🧜‍♂️"
 		];
-		const users = await db.user.findMany({
-			orderBy: {
-				created_at: 'desc',
-			},
-		});
-
-		users.forEach((user: any) => {
-			user.emoji = emojis[Math.floor(Math.random() * emojis.length)];
-			user.created_at =
-				user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) +
-				' ' +
-				user.created_at.toLocaleDateString('en-US', {
-					month: '2-digit',
-					day: '2-digit',
-					year: 'numeric',
-				});
-		});
+		const users = (
+			await db.user.findMany({
+				orderBy: {
+					created_at: 'desc',
+				},
+			})
+		).map((user) => ({
+			...user,
+			emoji: emojis[Math.floor(Math.random() * emojis.length)],
+			// prettier-ignore
+			created_at: user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + user.created_at.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', }),
+		}));
 
 		return res.render('guest-book.html', { title: 'guest book', path: req.path, users });
 	} catch (error) {
@@ -58,7 +53,7 @@ routes.post('/guest-book', async (req, res, next) => {
 				message: req.body.message,
 			},
 		});
-		return res.redirect('/guest-book');
+		return res.redirect('/guest-book?success=true');
 	} catch (error) {
 		next(error);
 	}

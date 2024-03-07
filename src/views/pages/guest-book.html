@@ -30,6 +30,8 @@
 	</div>
 </div>
 
+<script src="/js/confetti.browser.min.js"></script>
+
 <script>
 	async function getUserIp() {
 		return (
@@ -42,6 +44,21 @@
 	}
 
 	document.addEventListener('DOMContentLoaded', async (event) => {
+		const success = new URLSearchParams(window.location.search).get('success');
+
+		if (success === 'true') {
+			confetti({
+				particleCount: 100,
+				spread: 70,
+				origin: { y: 0.6 },
+			});
+		}
+
+		// remove ?success=true
+		setTimeout(() => {
+			window.history.replaceState({}, document.title, window.location.pathname);
+		}, 1000);
+
 		const ip = await getUserIp();
 		document.getElementById('name').value = ip.ip;
 	});

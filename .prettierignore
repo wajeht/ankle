@@ -16,3 +16,5 @@ backup*
 ./src/index.js
 /dist
 ./src/database/db.sqlite
+./public/js/*
+/public/js/*

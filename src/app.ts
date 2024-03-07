@@ -15,7 +15,8 @@ app.use(
 			directives: {
 				...helmet.contentSecurityPolicy.getDefaultDirectives(),
 				'default-src': ["'self'", 'plausible.jaw.dev', 'ip.jaw.dev'],
-				'script-src': ["'self'", "'unsafe-inline'", 'plausible.jaw.dev'],
+				'script-src': ["'self'", "'unsafe-inline'", 'plausible.jaw.dev', 'blob:'],
+				'worker-src': ["'self'", 'blob:'],
 			},
 		},
 	}),
