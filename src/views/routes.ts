@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import marked from 'marked';
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
+import { db } from '../db/db';
 
 const routes = express.Router();
 
@@ -9,8 +10,31 @@ routes.get('/healthz', (req, res) => {
 	return res.status(200).send('ok');
 });
 
-routes.get('/guest-book', (req, res) => {
-	return res.render('guest-book.html', { title: 'guest book', path: req.path });
+routes.get('/guest-book', async (req, res, next) => {
+	try {
+		const users = await db.user.findMany({
+			orderBy: {
+				created_at: 'desc',
+			},
+		});
+		return res.render('guest-book.html', { title: 'guest book', path: req.path, users });
+	} catch (error) {
+		next(error);
+	}
+});
+
+routes.post('/guest-book', async (req, res, next) => {
+	try {
+		await db.user.create({
+			data: {
+				name: req.body.name,
+				message: req.body.message,
+			},
+		});
+		return res.redirect('/guest-book');
+	} catch (error) {
+		next(error);
+	}
 });
 
 routes.get('/gallery', (req, res) => {

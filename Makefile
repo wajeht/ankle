@@ -43,7 +43,7 @@ seed:
 	docker compose exec ankle npm run db:seed
 
 migrate_dev:
-	docker compose exec ankle npm run db:push
+	docker compose exec ankle npm run db:migrate:dev
 
 lint:
 	docker compose exec ankle npm run lint

@@ -22,6 +22,8 @@ app.use(
 );
 
 app.use(localVariables);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(compression());
 app.use(express.static(path.resolve(path.join(process.cwd(), 'public')), { maxAge: '24h' }));
