@@ -15,13 +15,18 @@ app.use(
 			directives: {
 				...helmet.contentSecurityPolicy.getDefaultDirectives(),
 				'default-src': ["'self'", 'plausible.jaw.dev', 'ip.jaw.dev'],
-				'script-src': ["'self'", "'unsafe-inline'", 'plausible.jaw.dev', 'blob:'],
+				'script-src': [
+					"'self'",
+					"'unsafe-inline'",
+					'plausible.jaw.dev',
+					'blob:',
+					'text/javascript',
+				],
 				'worker-src': ["'self'", 'blob:'],
 			},
 		},
 	}),
 );
-
 app.use(localVariables);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
