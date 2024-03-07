@@ -16,6 +16,7 @@
 	},
 	"include": ["./src/**/*.ts", ".env"],
 	"exclude": [
+		"public/js/*",
 		"**/*.factory.ts",
 		"**/*.seeder.ts",
 		"src/database/__generated__",
