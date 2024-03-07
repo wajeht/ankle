@@ -1,5 +1,5 @@
 import { it, expect, vi } from 'vitest';
-import { app as server } from './index';
+import { app as server } from './app';
 import request from 'supertest';
 
 const app = request(server);
