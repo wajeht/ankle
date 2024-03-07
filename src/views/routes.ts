@@ -3,8 +3,6 @@ import marked from 'marked';
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
 import { db } from '../db/db';
-import { User } from '@prisma/client';
-
 const routes = express.Router();
 
 routes.get('/healthz', (req, res) => {
@@ -33,7 +31,7 @@ routes.get('/guest-book', async (req, res, next) => {
 					created_at: 'desc',
 				},
 			})
-		).map((user: User) => ({
+		).map((user: any) => ({
 			...user,
 			emoji: emojis[Math.floor(Math.random() * emojis.length)],
 			// prettier-ignore
