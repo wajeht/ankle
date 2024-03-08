@@ -1,1 +1,5 @@
-<p>oh no, something went wrong!</p>
+<% if (typeof error === 'object' ) { %>
+<pre style="white-space: pre-wrap; word-wrap: break-word"><%= error %></pre>
+<% } else { %>
+<p><%= error %></p>
+<% } %>
