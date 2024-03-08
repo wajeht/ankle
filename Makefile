@@ -37,13 +37,19 @@ generate:
 	docker compose exec ankle npm run db:generate
 
 push:
-	docker compose exec ankle npm run db:generate
+	docker compose exec ankle npm run db:push
 
 seed:
 	docker compose exec ankle npm run db:seed
 
 migrate_dev:
 	docker compose exec ankle npm run db:migrate:dev
+
+db:
+	docker compose exec ankle npm run db:migrate:dev
+	docker compose exec ankle npm run db:generate
+	docker compose exec ankle npm run db:push
+	docker compose exec ankle npm run db:seed
 
 lint:
 	docker compose exec ankle npm run lint
