@@ -1,6 +1,8 @@
 import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
+import session from 'express-session';
+import flash from 'connect-flash';
 import ejs from 'ejs';
 import path from 'path';
 import express from 'express';
@@ -24,6 +26,18 @@ app.use(
 				],
 				'worker-src': ["'self'", 'blob:'],
 			},
+		},
+	}),
+);
+app.use(flash());
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET!,
+		resave: false,
+		saveUninitialized: true,
+		cookie: {
+			httpOnly: process.env.NODE_EVN === 'production',
+			secure: process.env.NODE_EVN === 'production',
 		},
 	}),
 );

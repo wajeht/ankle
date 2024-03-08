@@ -38,7 +38,12 @@ routes.get('/guest-book', async (req, res, next) => {
 			created_at: user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + user.created_at.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', }),
 		}));
 
-		return res.render('guest-book.html', { title: 'guest book', path: req.path, users });
+		return res.render('guest-book.html', {
+			title: 'guest book',
+			path: req.path,
+			users,
+			flashMessages: req.flash(),
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -46,12 +51,18 @@ routes.get('/guest-book', async (req, res, next) => {
 
 routes.post('/guest-book', async (req, res, next) => {
 	try {
+		if (!req.body.name || !req.body.message) {
+			req.flash('error', '🚨⚠️‼️ name or message must not be empty ‼️⚠️🚨');
+			return res.redirect('/guest-book');
+		}
+
 		await db.user.create({
 			data: {
 				name: req.body.name,
 				message: req.body.message,
 			},
 		});
+		req.flash('success', '🎉 🥳 Thank you for signing my guest book! 🙏');
 		return res.redirect('/guest-book?success=true');
 	} catch (error) {
 		next(error);

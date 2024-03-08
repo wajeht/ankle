@@ -1,0 +1,7 @@
+<% if (Object.keys(flashMessages).length) { %> <% for (const m in flashMessages) { %>
+<p
+	style="color: <%= m === 'success' ? '#00ff00' : m === 'error' ? '#ff0000' : m === 'info' ? 'blue' : '#ffff00' %>"
+>
+	<%= flashMessages[m] %>
+</p>
+<% } %> <% } %>
