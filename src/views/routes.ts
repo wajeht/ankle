@@ -11,7 +11,6 @@ routes.get('/healthz', (req, res) => {
 
 routes.get('/guest-book', async (req, res, next) => {
 	try {
-
 		// prettier-ignore
 		const emojis = [
 			'🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🦝', '🐻', '🐼', '🦘',
