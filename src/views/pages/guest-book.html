@@ -1,5 +1,6 @@
 <div>
 	<div
+		id="pointing"
 		class="animate__animated animate__fadeInDownBig"
 		style="position: fixed; z-index: 100; bottom: 100px; right: 0"
 	>
@@ -54,10 +55,26 @@
 		).json();
 	}
 
+	function removePointingDiv() {
+		const poiinitgDiv = document.getElementById('pointing');
+		if (poiinitgDiv) {
+			poiinitgDiv.parentNode.removeChild(poiinitgDiv);
+		}
+	}
+
 	document.addEventListener('DOMContentLoaded', async (event) => {
+		const isSigned = localStorage.getItem('signed');
+
+		if (isSigned === 'true') {
+			removePointingDiv();
+		}
+
 		const success = new URLSearchParams(window.location.search).get('success');
 
 		if (success === 'true') {
+			removePointingDiv();
+			localStorage.setItem('signed', 'true');
+
 			confetti({
 				particleCount: 100,
 				spread: 70,
@@ -65,7 +82,7 @@
 			});
 		}
 
-		// remove ?success=true
+		// remove?success=true
 		setTimeout(() => {
 			window.history.replaceState({}, document.title, window.location.pathname);
 		}, 1000);
