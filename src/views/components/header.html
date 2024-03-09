@@ -1,4 +1,32 @@
-<div>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var bird = document.querySelector('.flying-bird');
+		var isMovingRight = true; // Initial direction is right.
+
+		function updateBirdAnimation() {
+			// Calculate random top position
+			var windowHeight = window.innerHeight;
+			var randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
+			bird.style.top = randomTopPosition;
+
+			// Toggle direction
+			isMovingRight = !isMovingRight;
+
+			// Apply the appropriate animation based on the new direction
+			if (isMovingRight) {
+				bird.style.animationName = 'moveBirdRight';
+				bird.style.transform = 'scaleX(1)'; // Bird facing right
+			} else {
+				bird.style.animationName = 'moveBirdLeft';
+				bird.style.transform = 'scaleX(-1)'; // Bird facing left
+			}
+		}
+
+		bird.addEventListener('animationiteration', updateBirdAnimation);
+	});
+</script>
+
+<div style="position: relative">
 	<!-- header -->
 	<header>
 		<a href="/" style="display: flex; justify-content: center">
@@ -21,4 +49,36 @@
 			</ul>
 		</nav>
 	</header>
+
+	<img width="100" class="flying-bird" src="/img/etc/flying_bird.gif" alt="" />
 </div>
+
+<style>
+	.flying-bird {
+		z-index: 300 !important;
+		width: 50px;
+		height: 50px;
+		position: fixed;
+		animation: moveBirdRight 60s linear infinite;
+	}
+
+	@keyframes moveBirdRight {
+		0% {
+			left: 0;
+		}
+
+		100% {
+			left: calc(100% - 100px);
+		}
+	}
+
+	@keyframes moveBirdLeft {
+		0% {
+			left: calc(100% - 100px);
+		}
+
+		100% {
+			left: 0;
+		}
+	}
+</style>
