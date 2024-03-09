@@ -10,8 +10,17 @@
 	<hr />
 
 	<% for (let i=0; i < posts.length; i++) { %>
-	<h2>
+	<h2 class="post">
 		<a href="/posts/<%= posts[i].title %>" title="<%= posts[i].title %>"> <%= posts[i].title %> </a>
 	</h2>
 	<% } %>
 </div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const posts = document.getElementsByClassName('post');
+		posts[0].innerHTML = posts[0].innerHTML + '<img src="/img/etc/new.gif" width="50" />';
+		posts[0].style.display = 'flex';
+		posts[0].style.gap = '5px';
+	});
+</script>
