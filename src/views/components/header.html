@@ -1,6 +1,24 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
 		const bird = document.querySelector('.flying-bird');
+		bird.addEventListener('click', function () {
+			const kakarrrDiv = document.createElement('div');
+			kakarrrDiv.id = 'kakarrr';
+			kakarrrDiv.textContent = 'kakarrr';
+			kakarrrDiv.style.position = 'absolute';
+			kakarrrDiv.style.backgroundColor = 'red';
+			kakarrrDiv.style.color = 'white';
+			kakarrrDiv.style.padding = '5px';
+			kakarrrDiv.style.borderRadius = '10px';
+			kakarrrDiv.style.zIndex = '300';
+			kakarrrDiv.style.fontSize = '11px';
+			kakarrrDiv.style.top = '-30px';
+			bird.appendChild(kakarrrDiv);
+		});
+	});
+
+	document.addEventListener('DOMContentLoaded', function () {
+		const bird = document.querySelector('.flying-bird');
 		let isMovingRight = true; // Initial direction is right.
 
 		const windowHeight = window.innerHeight;
@@ -54,7 +72,9 @@
 		</nav>
 	</header>
 
-	<img width="100" class="flying-bird" src="/img/etc/flying_bird.gif" alt="" />
+	<div class="flying-bird">
+		<img width="100" src="/img/etc/flying_bird.gif" alt="" />
+	</div>
 </div>
 
 <style>
