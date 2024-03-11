@@ -1,12 +1,16 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-		var bird = document.querySelector('.flying-bird');
-		var isMovingRight = true; // Initial direction is right.
+		const bird = document.querySelector('.flying-bird');
+		let isMovingRight = true; // Initial direction is right.
+
+		const windowHeight = window.innerHeight;
+		const randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
+		bird.style.top = randomTopPosition;
 
 		function updateBirdAnimation() {
 			// Calculate random top position
-			var windowHeight = window.innerHeight;
-			var randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
+			const windowHeight = window.innerHeight;
+			const randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
 			bird.style.top = randomTopPosition;
 
 			// Toggle direction
