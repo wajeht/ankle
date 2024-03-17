@@ -1,7 +1,7 @@
 commit:
-	npm run test
-	npm run format
-	npm run lint
+	make test
+	make format
+	make lint
 	git add -A
 	./commit.sh
 	git push --no-verify
