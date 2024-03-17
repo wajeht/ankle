@@ -3,5 +3,9 @@ public/libs/*
 public/lib*
 public/js*
 public/client.js
+public/*
+src/views/components/*
+src/views/layouts/*
+src/views/pages/*
 dist/*
 dist
