@@ -1,4 +1,4 @@
-commit:
+push:
 	make test
 	make format
 	make lint
@@ -36,7 +36,7 @@ test-w:
 generate:
 	docker compose exec ankle npm run db:generate
 
-push:
+db-push:
 	docker compose exec ankle npm run db:push
 
 seed:
@@ -45,7 +45,7 @@ seed:
 migrate_dev:
 	docker compose exec ankle npm run db:migrate:dev
 
-db:
+reset-db:
 	docker compose exec ankle npm run db:migrate:dev
 	docker compose exec ankle npm run db:generate
 	docker compose exec ankle npm run db:push
