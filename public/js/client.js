@@ -38,16 +38,16 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 	const socket = io('/');
 	window.socket = socket;
 
-	window.socket.on('connect', () => {
-			console.log('socket connected!');
-			window.socket.emit('user:online', socket.id)
+	socket.on('connect', () => {
+		console.log('socket connected!');
+		socket.emit('user:online', socket.id);
 	});
 
-	window.socket.on('user:online', (users) => {
-		console.log('user:online', users);
-	})
+	socket.on('user:online', (users) => {
+			console.log('Online users:', users);
+	});
 
-	window.socket.on('disconnect', () => {
-			console.log('socket disconnected!');
+	socket.on('disconnect', () => {
+		console.log('socket disconnected!');
 	});
 });
