@@ -25,7 +25,7 @@
 
 		window.socket.on('disconnect', () => {
 			console.log('socket disconnected!');
-			window.users = window.users.filter(u => u === window.socket.id);
+			window.users = window.users.filter(u => u !== window.socket.id);
 			if (document.getElementById('user-online')) {
 				document.getElementById('user-online').innerText = window.users.length;
 			}
