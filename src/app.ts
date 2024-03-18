@@ -22,7 +22,7 @@ app.use(
 		skip: async function (req, _res) {
 			const myIp = (req.headers['x-forwarded-for'] || req.socket.remoteAddress).split(', ')[0];
 			const myIpWasConnected = myIp === process.env.MY_IP;
-			return myIpWasConnected;
+			return myIpWasConnected || process.env.NODE_ENV !== 'production';
 		},
 		message: (req: Request, res: Response) => {
 			if (req.get('Content-Type') === 'application/json') {

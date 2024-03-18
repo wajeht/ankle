@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', async (event) => {
+	console.log(`
+
+
+
+
+
+
+          JJJJJJJJJJJ               AAA               WWWWWWWW                           WWWWWWWW
+          J:::::::::J              A:::A              W::::::W                           W::::::W
+          J:::::::::J             A:::::A             W::::::W                           W::::::W
+          JJ:::::::JJ            A:::::::A            W::::::W                           W::::::W
+	        J:::::J             A:::::::::A            W:::::W           WWWWW           W:::::W
+	        J:::::J            A:::::A:::::A            W:::::W         W:::::W         W:::::W
+	        J:::::J           A:::::A A:::::A            W:::::W       W:::::::W       W:::::W
+	        J:::::j          A:::::A   A:::::A            W:::::W     W:::::::::W     W:::::W
+	        J:::::J         A:::::A     A:::::A            W:::::W   W:::::W:::::W   W:::::W
+JJJJJJJ     J:::::J        A:::::AAAAAAAAA:::::A            W:::::W W:::::W W:::::W W:::::W
+J:::::J     J:::::J       A:::::::::::::::::::::A            W:::::W:::::W   W:::::W:::::W
+J::::::J   J::::::J      A:::::AAAAAAAAAAAAA:::::A            W:::::::::W     W:::::::::W
+J:::::::JJJ:::::::J     A:::::A             A:::::A            W:::::::W       W:::::::W
+ JJ:::::::::::::JJ     A:::::A               A:::::A            W:::::W         W:::::W
+   JJ:::::::::JJ      A:::::A                 A:::::A            W:::W           W:::W
+    JJJJJJJJJ       AAAAAAA                   AAAAAAA            WWW             WWW
+
+
+
+
+
+
+
+	`);
 	// particlejs
 	particlesJS.load('particles-js', '/js/particlesjs-config.json', function() {
   	// console.log('callback - particles.js config loaded');
