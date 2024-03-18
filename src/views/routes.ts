@@ -88,7 +88,7 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const ip = await getIPAddress();
 
-		db.count.create({ data: { ip } });
+		await db.count.create({ data: { ip } });
 
 		const [{ count }] = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
 
