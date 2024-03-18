@@ -4,18 +4,9 @@ import path from 'path';
 // @ts-ignore
 import express, { Request, Response, NextFunction } from 'express';
 import { db } from '../db/db';
-const routes = express.Router();
+import { getIPAddress } from '../utils/utils';
 
-export async function getIPAddress() {
-	try {
-		const response = await fetch('https://ip.jaw.dev');
-		const data = await response.text();
-		return data.trim();
-	} catch (error) {
-		console.error('Error fetching IP address:', error);
-		throw error;
-	}
-}
+const routes = express.Router();
 
 routes.get('/healthz', (req: Request, res: Response) => {
 	const message = 'ok';
