@@ -29,15 +29,14 @@
 			posts[0].style.gap = '5px';
 		}
 
-
 		// websocket stuff
 		window.socket.on('connect', () => {
-			// console.log('socket connected!');
+			console.log('socket connected!');
 			window.socket.emit('user:online', socket.id);
 		});
 
 		window.socket.on('user:online', (users) => {
-			// console.log('Online users:', users);
+			console.log('user:online', users);
 			window.users = users || [];
 			if (document.getElementById('user-online')) {
 				document.getElementById('user-online').innerText = users.length;
@@ -45,7 +44,8 @@
 		});
 
 		window.socket.on('disconnect', () => {
-			// console.log('socket disconnected!');
+			console.log('socket disconnected!');
+			window.users = window.users.filter(u => u === window.socket.id);
 			if (document.getElementById('user-online')) {
 				document.getElementById('user-online').innerText = window.users.length;
 			}
