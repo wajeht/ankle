@@ -84,6 +84,7 @@ routes.get('/gallery', (req: Request, res: Response) => {
 
 routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		const counts = await db.count;
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
 			.filter((file) => file.endsWith('.md'))
