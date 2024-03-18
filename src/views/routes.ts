@@ -98,7 +98,7 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 		const ip = await getIPAddress();
 
 		await db.count.create({ data: { ip } });
-		const counts = await db.count.findMany();
+		const counts = (await db.count.findMany()).length;
 
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
