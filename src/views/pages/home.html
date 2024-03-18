@@ -34,20 +34,29 @@
 </script>
 
 <div>
+
 	<div>
+		<!-- pic div -->
 		<figure>
 			<img src="/img/etc/flex.jpeg" alt="you mirin bro" />
 			<figcaption class="animate__animated animate__heartBeat">I snap my leg recently!</figcaption>
 		</figure>
 
-		<p style="text-align: center;">Current visitors online: <span id="user-online" class="rainbow-text" style="font-weight: bold;"></span>. You are visitor: <span class="rainbow-text"><%= counts %></span>. Don't forgot to <a href="/guest-book" title="guest-book" style="font-weight: bold;">sign my guest book!</a></p>
+		<!-- audio -->
+		<div style="display: flex; justify-content: center; align-items: center; margin-top: 15px;" >
+			<audio id="music" controls autoplay="autoplay" preload="auto" loop="true">
+    		<source src="/audio/highway-to-hell.mp3?v=0.1" type="audio/mpeg">
+				<span class="rainbow-text"> ‼️🚨 our browser does not support the audio element. 🚨 ‼️</span>
+			</audio>
+		</div>
+
+		<!-- visitor -->
+		<p style="text-align: center;">Visitors online: <span id="user-online" class="rainbow-text" style="font-weight: bold;"></span>. You are visitor: <span class="rainbow-text"><%= counts %></span>. Don't forgot to <a href="/guest-book" title="guest-book" style="font-weight: bold;">sign my guest book!</a></p>
+
 	</div>
 
-	<audio id="music" controls autoplay="autoplay" preload="auto" loop="true">
-    <source src="/audio/highway-to-hell.mp3?v=0.1" type="audio/mpeg">
-		<span class="rainbow-text"> ‼️🚨 our browser does not support the audio element. 🚨 ‼️</span>
-	</audio>
 
+	<!-- posts -->
 	<h2>📃 Posts</h2>
 	<hr />
 
