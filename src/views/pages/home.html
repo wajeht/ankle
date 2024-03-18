@@ -20,11 +20,35 @@
 
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
+
+		// add new gif beside post gigle
 		const posts = document.getElementsByClassName('post');
 		if (posts.length > 0) {
 			posts[0].innerHTML = posts[0].innerHTML + '<img src="/img/etc/new.gif" width="50" />';
 			posts[0].style.display = 'flex';
 			posts[0].style.gap = '5px';
 		}
+
+
+		// websocket stuff
+		window.socket.on('connect', () => {
+			// console.log('socket connected!');
+			window.socket.emit('user:online', socket.id);
+		});
+
+		window.socket.on('user:online', (users) => {
+			// console.log('Online users:', users);
+			window.users = users || [];
+			if (document.getElementById('user-online')) {
+				document.getElementById('user-online').innerText = users.length;
+			}
+		});
+
+		window.socket.on('disconnect', () => {
+			// console.log('socket disconnected!');
+			if (document.getElementById('user-online')) {
+				document.getElementById('user-online').innerText = window.users.length;
+			}
+		});
 	});
 </script>

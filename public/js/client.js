@@ -33,26 +33,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 		false,
 	);
 
-
 	// web sockets
 	const socket = io('/');
 	window.socket = socket;
-
-	socket.on('connect', () => {
-		// console.log('socket connected!');
-		socket.emit('user:online', socket.id);
-	});
-
-	socket.on('user:online', (users) => {
-			// console.log('Online users:', users);
-			window.users = users || [];
-			if (document.getElementById('user-online')) {
-				document.getElementById('user-online').innerText = users.length;
-			}
-	});
-
-	socket.on('disconnect', () => {
-		// console.log('socket disconnected!');
-			document.getElementById('user-online').innerText = window.users.length;
-	});
 });
