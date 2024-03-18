@@ -15,6 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 	global.prisma = prisma;
 }
 
-export const onlineUsers: any = [];
+// eslint-disable-next-line prefer-const
+export let onlineUsers: any = [];
 
 export const db = prisma;

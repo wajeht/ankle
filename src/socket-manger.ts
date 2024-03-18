@@ -20,8 +20,12 @@ export function setupSocketHandlers(io: SocketIOServer): void {
 			connectedSockets.delete(socket);
 
 			// delete user sockets from online users db
-			const u = users.filter((uu: any) => uu === socket.id);
-			socket.broadcast.emit('user:online', u);
+			const index = users.findIndex((u: any) => u === socket.id);
+			if (index !== -1) {
+				users.splice(index, 1);
+			}
+
+			socket.broadcast.emit('user:online', users);
 		});
 	});
 }
