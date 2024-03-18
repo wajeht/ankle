@@ -12,10 +12,11 @@
 		"skipLibCheck": true,
 		"incremental": true,
 		"removeComments": true,
-		"typeRoots": ["node_modules/@types"]
+		"typeRoots": ["./node_modules/@types/node", "node"]
 	},
 	"include": ["./src/**/*.ts", ".env"],
 	"exclude": [
+		"node_modules",
 		"public/js/*",
 		"**/*.factory.ts",
 		"**/*.seeder.ts",

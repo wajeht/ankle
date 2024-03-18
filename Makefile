@@ -54,5 +54,8 @@ reset-db:
 lint:
 	docker compose exec ankle npm run lint
 
+build:
+	docker compose exec ankle npm run build
+
 format:
 	docker compose exec ankle npm run format

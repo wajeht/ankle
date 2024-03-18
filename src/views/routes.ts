@@ -1,15 +1,22 @@
 import fs from 'fs/promises';
 import marked from 'marked';
 import path from 'path';
+// @ts-ignore
 import express, { Request, Response, NextFunction } from 'express';
 import { db } from '../db/db';
 const routes = express.Router();
 
-routes.get('/healthz', (req, res) => {
-	return res.status(200).send('ok');
+routes.get('/healthz', (req: Request, res: Response) => {
+	const message = 'ok';
+
+	if (req.get('Content-Type') === 'application/json') {
+		return res.status(200).json({ message });
+	}
+
+	return res.status(200).send(message);
 });
 
-routes.get('/guest-book', async (req, res, next) => {
+routes.get('/guest-book', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		// prettier-ignore
 		const emojis = [
@@ -51,7 +58,7 @@ routes.get('/guest-book', async (req, res, next) => {
 	}
 });
 
-routes.post('/guest-book', async (req, res, next) => {
+routes.post('/guest-book', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		if (!req.body.name || !req.body.message) {
 			req.flash('error', '🚨⚠️‼️ name or message must not be empty ‼️⚠️🚨');
@@ -71,11 +78,11 @@ routes.post('/guest-book', async (req, res, next) => {
 	}
 });
 
-routes.get('/gallery', (req, res) => {
+routes.get('/gallery', (req: Request, res: Response) => {
 	return res.render('gallery.html', { title: 'gallery', path: req.path });
 });
 
-routes.get('/', async (req, res, next) => {
+routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
@@ -91,7 +98,7 @@ routes.get('/', async (req, res, next) => {
 	}
 });
 
-routes.get('/posts/:post', async (req, res, next) => {
+routes.get('/posts/:post', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const postPath = path.resolve(
 			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
