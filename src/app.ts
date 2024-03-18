@@ -25,13 +25,10 @@ app.use(
 			return myIpWasConnected;
 		},
 		message: (req: Request, res: Response) => {
-			const message = 'Too many requests, please try again later?';
-
 			if (req.get('Content-Type') === 'application/json') {
-				return res.status(429).json({ message });
+				return res.status(429).json({ message: 'Too many requests, please try again later?' });
 			}
-
-			return res.status(429).send(message);
+			return res.status(429).render('./rate-limit.html');
 		},
 	}),
 );
