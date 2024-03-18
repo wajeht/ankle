@@ -88,8 +88,9 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const ip = await getIPAddress();
 
-		await db.count.create({ data: { ip } });
-		const counts = (await db.count.findMany()).length;
+		db.count.create({ data: { ip } });
+
+		const [{ count }] = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
 
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
@@ -99,7 +100,7 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 				file,
 			}))
 			.reverse();
-		return res.render('home.html', { title: 'ankle.jaw.dev', path: req.path, posts, counts });
+		return res.render('home.html', { title: 'ankle.jaw.dev', path: req.path, posts, count });
 	} catch (err) {
 		next(err);
 	}
