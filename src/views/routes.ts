@@ -97,12 +97,12 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const ip = await getIPAddress();
 
-		let counts = await db.count.count({ where: { ip } });
+		const counts = await db.count.count({ where: { ip } });
 
-		if (!counts) {
-			await db.count.create({ data: { ip } });
-			counts = await db.count.count({ where: { ip } });
-		}
+		// if (!counts) {
+		// 	await db.count.create({ data: { ip } });
+		// 	counts = await db.count.count({ where: { ip } });
+		// }
 
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
