@@ -8,28 +8,6 @@
 			posts[0].style.display = 'flex';
 			posts[0].style.gap = '5px';
 		}
-
-		// websocket stuff
-		window.socket.on('connect', () => {
-			console.log('socket connected!');
-			window.socket.emit('user:online', socket.id);
-		});
-
-		window.socket.on('user:online', (users) => {
-			console.log('user:online', users);
-			window.users = users || [];
-			if (document.getElementById('user-online')) {
-				document.getElementById('user-online').innerText = users.length;
-			}
-		});
-
-		window.socket.on('disconnect', () => {
-			console.log('socket disconnected!');
-			window.users = window.users.filter(u => u !== window.socket.id);
-			if (document.getElementById('user-online')) {
-				document.getElementById('user-online').innerText = window.users.length;
-			}
-		});
 	});
 </script>
 
@@ -54,7 +32,6 @@
 		<p style="text-align: center;">Visitors online: <span id="user-online" class="rainbow-text" style="font-weight: bold;"></span>. You are visitor: <span class="rainbow-text"><%= count %></span>. Don't forgot to <a href="/guest-book" title="guest-book" style="font-weight: bold;">sign my guest book!</a></p>
 
 	</div>
-
 
 	<!-- posts -->
 	<h2>📃 Posts</h2>

@@ -21,7 +21,7 @@ J::::::J   J::::::J      A:::::AAAAAAAAAAAAA:::::A            W:::::::::W     W:
 J:::::::JJJ:::::::J     A:::::A             A:::::A            W:::::::W       W:::::::W
  JJ:::::::::::::JJ     A:::::A               A:::::A            W:::::W         W:::::W
    JJ:::::::::JJ      A:::::A                 A:::::A            W:::W           W:::W
-    JJJJJJJJJ       AAAAAAA                   AAAAAAA            WWW             WWW
+     JJJJJJJJJ       AAAAAAA                   AAAAAAA            WWW             WWW
 
 
 
@@ -67,4 +67,26 @@ J:::::::JJJ:::::::J     A:::::A             A:::::A            W:::::::W       W
 	// web sockets
 	const socket = io('/');
 	window.socket = socket;
+
+	// websocket stuff
+	window.socket.on('connect', () => {
+		// console.log('socket connected!');
+		window.socket.emit('user:online', socket.id);
+	});
+
+	window.socket.on('user:online', (users) => {
+		// console.log('user:online', users);
+		window.users = users || [];
+		if (document.getElementById('user-online')) {
+			document.getElementById('user-online').innerText = users.length;
+		}
+	});
+
+	window.socket.on('disconnect', () => {
+		// console.log('socket disconnected!');
+		window.users = window.users.filter(u => u !== window.socket.id);
+		if (document.getElementById('user-online')) {
+			document.getElementById('user-online').innerText = window.users.length;
+		}
+	});
 });
