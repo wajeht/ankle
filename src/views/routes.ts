@@ -6,6 +6,17 @@ import express, { Request, Response, NextFunction } from 'express';
 import { db } from '../db/db';
 const routes = express.Router();
 
+export async function getIPAddress() {
+	try {
+		const response = await fetch('https://ip.jaw.dev');
+		const data = await response.text();
+		return data.trim();
+	} catch (error) {
+		console.error('Error fetching IP address:', error);
+		throw error;
+	}
+}
+
 routes.get('/healthz', (req: Request, res: Response) => {
 	const message = 'ok';
 
@@ -84,7 +95,15 @@ routes.get('/gallery', (req: Request, res: Response) => {
 
 routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const counts = await db.count;
+		const ip = await getIPAddress();
+
+		let counts = await db.count.count({ where: { ip } });
+
+		if (!counts) {
+			await db.count.create({ data: { ip } });
+			counts = await db.count.count({ where: { ip } });
+		}
+
 		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
 		const posts = files
 			.filter((file) => file.endsWith('.md'))
@@ -93,7 +112,7 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 				file,
 			}))
 			.reverse();
-		return res.render('home.html', { title: 'ankle.jaw.dev', path: req.path, posts });
+		return res.render('home.html', { title: 'ankle.jaw.dev', path: req.path, posts, counts });
 	} catch (err) {
 		next(err);
 	}
