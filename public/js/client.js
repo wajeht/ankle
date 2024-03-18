@@ -46,7 +46,9 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 	socket.on('user:online', (users) => {
 			// console.log('Online users:', users);
 			window.users = users || [];
-			document.getElementById('user-online').innerText = users.length;
+			if (document.getElementById('user-online')) {
+				document.getElementById('user-online').innerText = users.length;
+			}
 	});
 
 	socket.on('disconnect', () => {
