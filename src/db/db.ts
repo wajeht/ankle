@@ -15,4 +15,6 @@ if (process.env.NODE_ENV !== 'production') {
 	global.prisma = prisma;
 }
 
+export const onlineUsers: any = [];
+
 export const db = prisma;

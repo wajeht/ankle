@@ -22,15 +22,10 @@ app.use(
 		skip: async function (req, _res) {
 			const myIp = (req.headers['x-forwarded-for'] || req.socket.remoteAddress).split(', ')[0];
 			const myIpWasConnected = myIp === process.env.MY_IP;
-			// if (myIpWasConnected) console.log(`my ip was connected: ${myIp}`);
 			return myIpWasConnected;
 		},
 		message: (req: Request, res: Response) => {
 			const message = 'Too many requests, please try again later?';
-
-			if (req.query.format === 'json' || req.query.json === 'true') {
-				return res.status(429).json({ message });
-			}
 
 			if (req.get('Content-Type') === 'application/json') {
 				return res.status(429).json({ message });
