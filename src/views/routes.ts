@@ -62,8 +62,8 @@ routes.get('/guest-book', async (req: Request, res: Response, next: NextFunction
 
 routes.post('/guest-book', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		if (!req.body.name || !req.body.message) {
-			req.flash('error', '🚨⚠️‼️ name or message must not be empty ‼️⚠️🚨');
+		if (!req.body.message) {
+			req.flash('error', '🚨⚠️‼️ message must not be empty ‼️⚠️🚨');
 			return res.redirect('/guest-book');
 		}
 
