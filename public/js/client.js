@@ -2,10 +2,6 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 	console.log(`
 
 
-
-
-
-
           JJJJJJJJJJJ               AAA               WWWWWWWW                           WWWWWWWW
           J:::::::::J              A:::A              W::::::W                           W::::::W
           J:::::::::J             A:::::A             W::::::W                           W::::::W
@@ -22,11 +18,6 @@ J:::::::JJJ:::::::J     A:::::A             A:::::A            W:::::::W       W
  JJ:::::::::::::JJ     A:::::A               A:::::A            W:::::W         W:::::W
    JJ:::::::::JJ      A:::::A                 A:::::A            W:::W           W:::W
      JJJJJJJJJ       AAAAAAA                   AAAAAAA            WWW             WWW
-
-
-
-
-
 
 
 	`);
