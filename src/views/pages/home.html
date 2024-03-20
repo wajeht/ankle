@@ -1,5 +1,6 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
+		let audio = <%- audio %>;
 
 		// add new gif beside post gigle
 		const posts = document.getElementsByClassName('post');
@@ -8,23 +9,6 @@
 			posts[0].style.display = 'flex';
 			posts[0].style.gap = '5px';
 		}
-
-
-		// playlist
-		const audio = [
-			{
-				id: 'shes-got-the-look',
-				url: '/audio/shes-got-the-look.mp3?v=0.1',
-			},
-			{
-				id: 'highway-to-hell',
-				url: '/audio/highway-to-hell.mp3?v=0.1',
-			},
-			{
-				id: 'black-betty',
-				url: '/audio/black-betty.mp3?v=0.1',
-			},
-		];
 
 		// play on click
 		for (const a of audio) {
@@ -48,7 +32,6 @@
 		}
 
 	});
-
 </script>
 
 <div>
@@ -60,30 +43,24 @@
 			<figcaption class="animate__animated animate__heartBeat">I snap my leg recently!</figcaption>
 		</figure>
 
+		<!-- playlist -->
+		<div style="display: flex; justify-content: center; align-items: center; margin-top: 15px;">
+			<table border="1">
+				<% for (const a of audio) { %>
+					<tr>
+						<td><%= a.name %></td>
+						<td><button id="<%= a.id %>">play</button></td>
+					</tr>
+				<% } %>
+			</table>
+		</div>
+
 		<!-- audio -->
 		<div style="display: flex; justify-content: center; align-items: center; margin-top: 15px;">
 			<audio id="music" controls autoplay="autoplay" preload="auto" loop="true">
 				<source src="/audio/highway-to-hell.mp3?v=0.1" type="audio/mpeg">
 				<span class="rainbow-text"> ‼️🚨 our browser does not support the audio element. 🚨 ‼️</span>
 			</audio>
-		</div>
-
-		<!-- playlist -->
-		<div style="display: flex; justify-content: center; align-items: center; margin-top: 15px;">
-			<table border="1">
-				<tr>
-					<td>she's got the look</td>
-					<td><button id="shes-got-the-look">play</button></td>
-				</tr>
-				<tr>
-					<td>black betty</td>
-					<td><button id="black-betty">play</button></td>
-				</tr>
-				<tr>
-					<td>high way to hell</td>
-					<td><button id="highway-to-hell">play</button></td>
-				</tr>
-			</table>
 		</div>
 
 		<!-- visitor -->
@@ -104,5 +81,5 @@
 				<%= posts[i].title %>
 			</a>
 		</h2>
-	<% } %>
+		<% } %>
 </div>

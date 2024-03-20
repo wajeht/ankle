@@ -92,15 +92,25 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 		const [{ count }] = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
 
-		const files = await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts')));
-		const posts = files
-			.filter((file) => file.endsWith('.md'))
-			.map((file) => ({
-				title: path.basename(file, '.md'),
-				file,
-			}))
-			.reverse();
-		return res.render('home.html', { title: 'ankle.jaw.dev', path: req.path, posts, count });
+		return res.render('home.html', {
+			title: 'ankle.jaw.dev',
+			path: req.path,
+			count,
+			posts: (await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts'))))
+				.filter((file) => file.endsWith('.md'))
+				.map((file) => ({
+					title: path.basename(file, '.md'),
+					file,
+				}))
+				.reverse(),
+			audio: (await fs.readdir(path.resolve(path.join(process.cwd(), 'public', 'audio'))))
+				.filter((file) => file.endsWith('.mp3'))
+				.map((file) => ({
+					id: path.basename(file, '.mp3'),
+					name: path.basename(file, '.mp3').split('-').join(' '),
+					url: `/audio/${file}`,
+				})),
+		});
 	} catch (err) {
 		next(err);
 	}
