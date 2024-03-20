@@ -46,7 +46,7 @@
 		<!-- playlist -->
 		<div style="display: flex; justify-content: center; align-items: center; margin-top: 15px;">
 			<table border="1">
-				<% for (const a of audio) { %>
+				<% for (const a of JSON.parse(audio)) { %>
 					<tr>
 						<td><%= a.name %></td>
 						<td><button id="<%= a.id %>">play</button></td>

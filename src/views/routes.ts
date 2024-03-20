@@ -92,24 +92,28 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 		const [{ count }] = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
 
+		const audio = (await fs.readdir(path.resolve(path.join(process.cwd(), 'public', 'audio'))))
+			.filter((file) => file.endsWith('.mp3'))
+			.map((file) => ({
+				id: path.basename(file, '.mp3'),
+				name: path.basename(file, '.mp3').split('-').join(' '),
+				url: `/audio/${file}`,
+			}));
+
+		const posts = (await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts'))))
+			.filter((file) => file.endsWith('.md'))
+			.map((file) => ({
+				title: path.basename(file, '.md'),
+				file,
+			}))
+			.reverse();
+
 		return res.render('home.html', {
 			title: 'ankle.jaw.dev',
 			path: req.path,
+			posts,
 			count,
-			posts: (await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts'))))
-				.filter((file) => file.endsWith('.md'))
-				.map((file) => ({
-					title: path.basename(file, '.md'),
-					file,
-				}))
-				.reverse(),
-			audio: (await fs.readdir(path.resolve(path.join(process.cwd(), 'public', 'audio'))))
-				.filter((file) => file.endsWith('.mp3'))
-				.map((file) => ({
-					id: path.basename(file, '.mp3'),
-					name: path.basename(file, '.mp3').split('-').join(' '),
-					url: `/audio/${file}`,
-				})),
+			audio: JSON.stringify(audio),
 		});
 	} catch (err) {
 		next(err);
