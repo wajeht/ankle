@@ -9,6 +9,17 @@
 			posts[0].style.gap = '5px';
 		}
 	});
+
+	// playlist
+	setTimeout(() => {
+		const audio  = [
+			"/audio/highway-to-hell.mp3?v=0.1",
+			"/audio/black-betty.mp3?v=0.1",
+			"/audio/shes-got-the-look.mp3?v=0.1",
+		];
+		const selectedTrack = audio[Math.floor(Math.random() * audio.length)];
+		document.getElementById('music').src = selectedTrack;
+	}, 100);
 </script>
 
 <div>
@@ -23,7 +34,7 @@
 		<!-- audio -->
 		<div style="display: flex; justify-content: center; align-items: center; margin-top: 15px;" >
 			<audio id="music" controls autoplay="autoplay" preload="auto" loop="true">
-    		<source src="/audio/highway-to-hell.mp3?v=0.1" type="audio/mpeg">
+				<source src="/audio/highway-to-hell.mp3?v=0.1" type="audio/mpeg">
 				<span class="rainbow-text"> ‼️🚨 our browser does not support the audio element. 🚨 ‼️</span>
 			</audio>
 		</div>
