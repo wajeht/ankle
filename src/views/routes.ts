@@ -98,7 +98,8 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 				id: path.basename(file, '.mp3'),
 				name: path.basename(file, '.mp3').split('-').join(' '),
 				url: `/audio/${file}`,
-			}));
+			}))
+			.sort((a, b) => a.name.localeCompare(b.name));
 
 		const posts = (await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts'))))
 			.filter((file) => file.endsWith('.md'))
