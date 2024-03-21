@@ -20,34 +20,44 @@ routes.get('/healthz', (req: Request, res: Response) => {
 
 routes.get('/guest-book', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		// prettier-ignore
-		const emojis = [
-			'🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🦝', '🐻', '🐼', '🦘',
-			'🦡', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🙈', '🙉',
-			'🙊', '🐒', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🦆', '🦢',
-			'🦉', '🦚', '🦜', '🐺', '🐗', '🐴', '🦄', '🐝', '🪱', '🐛',
-			'🦋', '🐌', '🐞', '🐜', '🪰', '🪲', '🪳', '🦗', '🕷️', '🕸️',
-			'🦂', '🦟', '🦠', '🐢', '🐍', '🦎', '🐙', '🦑', '🦞', '🦀',
-			'🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆',
-			'🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘',
-			'🦬', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐',
-			'🦌', '🐕', '🐩', '🦮', '🐕‍🦺', '🐈', '🐈‍⬛', '🪶', '🐓', '🦃',
-			'🦤', '🦚', '🦜', '🦢', '🦩', '🕊️', '🐇', '🦝', '🦨', '🦡',
-			'🦦', '🦫', '🦭', '🦮', '🦧'
-		];
+		let users;
+		const cachedGuestBook = await redis.get('guest-book');
 
-		const users = (
-			await db.user.findMany({
-				orderBy: {
-					created_at: 'desc',
-				},
-			})
-		).map((user: any) => ({
-			...user,
-			emoji: emojis[Math.floor(Math.random() * emojis.length)],
+		if (!cachedGuestBook) {
 			// prettier-ignore
-			created_at: user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + user.created_at.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', }),
-		}));
+			const emojis = [
+				'🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🦝', '🐻', '🐼', '🦘',
+				'🦡', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🙈', '🙉',
+				'🙊', '🐒', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🦆', '🦢',
+				'🦉', '🦚', '🦜', '🐺', '🐗', '🐴', '🦄', '🐝', '🪱', '🐛',
+				'🦋', '🐌', '🐞', '🐜', '🪰', '🪲', '🪳', '🦗', '🕷️', '🕸️',
+				'🦂', '🦟', '🦠', '🐢', '🐍', '🦎', '🐙', '🦑', '🦞', '🦀',
+				'🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆',
+				'🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘',
+				'🦬', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐',
+				'🦌', '🐕', '🐩', '🦮', '🐕‍🦺', '🐈', '🐈‍⬛', '🪶', '🐓', '🦃',
+				'🦤', '🦚', '🦜', '🦢', '🦩', '🕊️', '🐇', '🦝', '🦨', '🦡',
+				'🦦', '🦫', '🦭', '🦮', '🦧'
+			];
+
+			users = (
+				await db.user.findMany({
+					orderBy: {
+						created_at: 'desc',
+					},
+				})
+			).map((user: any) => ({
+				...user,
+				emoji: emojis[Math.floor(Math.random() * emojis.length)],
+				// prettier-ignore
+				created_at: user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + user.created_at.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', }),
+			}));
+			await redis.set('guest-book', JSON.stringify(users));
+			logger.debug('un-cached-guest-books');
+		} else {
+			users = JSON.parse(cachedGuestBook);
+			logger.debug('cached-guest-books');
+		}
 
 		return res.render('guest-book.html', {
 			title: 'guest book',
@@ -73,6 +83,9 @@ routes.post('/guest-book', async (req: Request, res: Response, next: NextFunctio
 				message: req.body.message,
 			},
 		});
+
+		await redis.del('guest-book');
+
 		req.flash('success', '🎉 🥳 Thank you for signing my guest book! 🙏');
 		return res.redirect('/guest-book?success=true');
 	} catch (error) {
