@@ -2,6 +2,7 @@ import { app } from './app';
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import { disconnectSockets, setupSocketHandlers } from './socket-manger';
+import { logger } from './utils/utils';
 
 const PORT = process.env.PORT || 8080;
 
@@ -16,33 +17,33 @@ const io: SocketIOServer = new SocketIOServer(server, {
 server.listen(PORT, async () => {
 	try {
 		setupSocketHandlers(io);
-		console.log(`Server was started on http://localhost:${PORT}`);
+		logger.info(`Server was started on http://localhost:${PORT}`);
 	} catch (error) {
-		console.log('An error occurred during server start ', error);
+		logger.info('An error occurred during server start ', error);
 		process.exit(1);
 	}
 });
 
 export async function gracefulShutdown() {
-	console.log('Initiating graceful shutdown.');
+	logger.info('Initiating graceful shutdown.');
 
 	let isShutdownCompleted = false;
 
 	const shutdownProcess = async () => {
 		try {
 			disconnectSockets();
-			console.log('Successfully closed all connections.');
+			logger.info('Successfully closed all connections.');
 			isShutdownCompleted = true;
 			process.exit(0);
 		} catch (err) {
-			console.error('Shutdown error:', err);
+			logger.info('Shutdown error:', err);
 			process.exit(1);
 		}
 	};
 
 	server.close((err) => {
 		if (err) {
-			console.error('Error closing the server:', err);
+			logger.info('Error closing the server:', err);
 			process.exit(1);
 		} else {
 			shutdownProcess();
@@ -51,7 +52,7 @@ export async function gracefulShutdown() {
 
 	setTimeout(() => {
 		if (!isShutdownCompleted) {
-			console.error('Timeout: Forcefully shutting down.');
+			logger.info('Timeout: Forcefully shutting down.');
 			process.exit(1);
 		}
 	}, 60000); // 60 seconds
@@ -62,5 +63,5 @@ process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 
 process.on('unhandledRejection', (reason, promise) => {
-	console.error('Unhandled Rejection at: ', promise, ' reason: ', reason);
+	logger.info('Unhandled Rejection at: ', promise, ' reason: ', reason);
 });
