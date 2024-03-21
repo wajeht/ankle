@@ -8,3 +8,12 @@ export async function getIPAddress() {
 		throw error;
 	}
 }
+
+export const logger = {
+	debug: (value: any) => {
+		if (process.env.DEBUG === 'true' || process.env.NODE_ENV !== 'production') {
+			const timestamp = new Date().toLocaleString();
+			console.log(`${timestamp} ***** ${value} *****`);
+		}
+	},
+};

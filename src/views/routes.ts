@@ -3,8 +3,8 @@ import marked from 'marked';
 import path from 'path';
 // @ts-ignore
 import express, { Request, Response, NextFunction } from 'express';
-import { db } from '../db/db';
-import { getIPAddress } from '../utils/utils';
+import { db, redis } from '../db/db';
+import { getIPAddress, logger } from '../utils/utils';
 
 const routes = express.Router();
 
@@ -87,27 +87,44 @@ routes.get('/gallery', (req: Request, res: Response) => {
 routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const ip = await getIPAddress();
-
 		await db.count.create({ data: { ip } });
 
 		const [{ count }]: any = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
 
-		const audio = (await fs.readdir(path.resolve(path.join(process.cwd(), 'public', 'audio'))))
-			.filter((file) => file.endsWith('.mp3'))
-			.map((file) => ({
-				id: path.basename(file, '.mp3'),
-				name: path.basename(file, '.mp3').split('-').join(' '),
-				url: `/audio/${file}`,
-			}))
-			.sort((a, b) => a.name.localeCompare(b.name));
+		let audio: any = await redis.get('audio');
+		if (!audio) {
+			const audioFiles = await fs.readdir(path.resolve(process.cwd(), 'public', 'audio'));
+			audio = audioFiles
+				.filter((file) => file.endsWith('.mp3'))
+				.map((file) => ({
+					id: path.basename(file, '.mp3'),
+					name: path.basename(file, '.mp3').split('-').join(' '),
+					url: `/audio/${file}`,
+				}))
+				.sort((a, b) => a.name.localeCompare(b.name));
+			await redis.set('audio', JSON.stringify(audio));
+			logger.debug(`un-cached-audio`);
+		} else {
+			audio = JSON.parse(audio);
+			logger.debug(`cached-audio`);
+		}
 
-		const posts = (await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts'))))
-			.filter((file) => file.endsWith('.md'))
-			.map((file) => ({
-				title: path.basename(file, '.md'),
-				file,
-			}))
-			.reverse();
+		let posts: any = await redis.get('posts');
+		if (!posts) {
+			const postFiles = await fs.readdir(path.resolve(process.cwd(), 'src', 'posts'));
+			posts = postFiles
+				.filter((file) => file.endsWith('.md'))
+				.map((file) => ({
+					title: path.basename(file, '.md'),
+					file,
+				}))
+				.reverse();
+			await redis.set('posts', JSON.stringify(posts));
+			logger.debug(`un-cached-posts`);
+		} else {
+			posts = JSON.parse(posts);
+			logger.debug(`cached-posts`);
+		}
 
 		return res.render('home.html', {
 			title: 'ankle.jaw.dev',
@@ -123,13 +140,23 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 routes.get('/posts/:post', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const postPath = path.resolve(
-			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
-		);
-		const data = await fs.readFile(postPath, 'utf8');
+		let posts;
+		const cachedPost = await redis.get(`posts-${req.params.post}`);
+
+		if (!cachedPost) {
+			// prettier-ignore
+			const postPath = path.resolve(path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`));
+			posts = await fs.readFile(postPath, 'utf8');
+			await redis.set(`posts-${req.params.post}`, posts);
+			logger.debug(`un-cached-post-${req.params.post}`);
+		} else {
+			posts = cachedPost;
+			logger.debug(`cached-post-${req.params.post}`);
+		}
+
 		return res.render('post.html', {
 			title: req.params.post,
-			post: marked.marked(data),
+			post: marked.marked(posts),
 			layout: '../layouts/post.html',
 			path: req.path,
 		});
