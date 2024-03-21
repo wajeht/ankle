@@ -80,12 +80,12 @@
 				spread: 70,
 				origin: { y: 0.6 },
 			});
-		}
 
-		// remove?success=true
-		setTimeout(() => {
-			window.history.replaceState({}, document.title, window.location.pathname);
-		}, 1000);
+			// remove?success=true
+			setTimeout(() => {
+				window.history.replaceState({}, document.title, window.location.pathname);
+			}, 1000);
+		}
 
 		const ip = await getUserIp();
 		document.getElementById('name').value = ip.ip;

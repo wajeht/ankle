@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { redis as redisConfig } from '../config/config';
+import Redis from 'ioredis';
 
 declare global {
 	// eslint-disable-next-line no-var
@@ -15,4 +17,17 @@ if (process.env.NODE_ENV !== 'production') {
 	global.prisma = prisma;
 }
 
+const redis = new Redis({
+	port: redisConfig.port,
+	host: redisConfig.host,
+	password: redisConfig.password,
+	maxRetriesPerRequest: null,
+});
+
+redis.on('error', (error: Error) => {
+	console.error('Error initializing Redis:', error);
+	process.exit(1);
+});
+
+export { redis };
 export const db = prisma;

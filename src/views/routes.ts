@@ -3,8 +3,8 @@ import marked from 'marked';
 import path from 'path';
 // @ts-ignore
 import express, { Request, Response, NextFunction } from 'express';
-import { db } from '../db/db';
-import { getIPAddress } from '../utils/utils';
+import { db, redis } from '../db/db';
+import { getIPAddress, logger } from '../utils/utils';
 
 const routes = express.Router();
 
@@ -20,34 +20,44 @@ routes.get('/healthz', (req: Request, res: Response) => {
 
 routes.get('/guest-book', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		// prettier-ignore
-		const emojis = [
-			'🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🦝', '🐻', '🐼', '🦘',
-			'🦡', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🙈', '🙉',
-			'🙊', '🐒', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🦆', '🦢',
-			'🦉', '🦚', '🦜', '🐺', '🐗', '🐴', '🦄', '🐝', '🪱', '🐛',
-			'🦋', '🐌', '🐞', '🐜', '🪰', '🪲', '🪳', '🦗', '🕷️', '🕸️',
-			'🦂', '🦟', '🦠', '🐢', '🐍', '🦎', '🐙', '🦑', '🦞', '🦀',
-			'🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆',
-			'🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘',
-			'🦬', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐',
-			'🦌', '🐕', '🐩', '🦮', '🐕‍🦺', '🐈', '🐈‍⬛', '🪶', '🐓', '🦃',
-			'🦤', '🦚', '🦜', '🦢', '🦩', '🕊️', '🐇', '🦝', '🦨', '🦡',
-			'🦦', '🦫', '🦭', '🦮', '🦧'
-		];
+		let users;
+		const cachedGuestBook = await redis.get('guest-book');
 
-		const users = (
-			await db.user.findMany({
-				orderBy: {
-					created_at: 'desc',
-				},
-			})
-		).map((user: any) => ({
-			...user,
-			emoji: emojis[Math.floor(Math.random() * emojis.length)],
+		if (!cachedGuestBook) {
 			// prettier-ignore
-			created_at: user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + user.created_at.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', }),
-		}));
+			const emojis = [
+				'🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🦝', '🐻', '🐼', '🦘',
+				'🦡', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🙈', '🙉',
+				'🙊', '🐒', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🦆', '🦢',
+				'🦉', '🦚', '🦜', '🐺', '🐗', '🐴', '🦄', '🐝', '🪱', '🐛',
+				'🦋', '🐌', '🐞', '🐜', '🪰', '🪲', '🪳', '🦗', '🕷️', '🕸️',
+				'🦂', '🦟', '🦠', '🐢', '🐍', '🦎', '🐙', '🦑', '🦞', '🦀',
+				'🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆',
+				'🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘',
+				'🦬', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐',
+				'🦌', '🐕', '🐩', '🦮', '🐕‍🦺', '🐈', '🐈‍⬛', '🪶', '🐓', '🦃',
+				'🦤', '🦚', '🦜', '🦢', '🦩', '🕊️', '🐇', '🦝', '🦨', '🦡',
+				'🦦', '🦫', '🦭', '🦮', '🦧'
+			];
+
+			users = (
+				await db.user.findMany({
+					orderBy: {
+						created_at: 'desc',
+					},
+				})
+			).map((user: any) => ({
+				...user,
+				emoji: emojis[Math.floor(Math.random() * emojis.length)],
+				// prettier-ignore
+				created_at: user.created_at.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ' + user.created_at.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', }),
+			}));
+			await redis.set('guest-book', JSON.stringify(users));
+			logger.debug('un-cached-guest-books');
+		} else {
+			users = JSON.parse(cachedGuestBook);
+			logger.debug('cached-guest-books');
+		}
 
 		return res.render('guest-book.html', {
 			title: 'guest book',
@@ -73,6 +83,9 @@ routes.post('/guest-book', async (req: Request, res: Response, next: NextFunctio
 				message: req.body.message,
 			},
 		});
+
+		await redis.del('guest-book');
+
 		req.flash('success', '🎉 🥳 Thank you for signing my guest book! 🙏');
 		return res.redirect('/guest-book?success=true');
 	} catch (error) {
@@ -86,28 +99,56 @@ routes.get('/gallery', (req: Request, res: Response) => {
 
 routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const ip = await getIPAddress();
-
-		await db.count.create({ data: { ip } });
+		const clientIp = await getIPAddress();
+		await db.count.create({ data: { ip: clientIp } });
 
 		const [{ count }]: any = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
 
-		const audio = (await fs.readdir(path.resolve(path.join(process.cwd(), 'public', 'audio'))))
-			.filter((file) => file.endsWith('.mp3'))
-			.map((file) => ({
-				id: path.basename(file, '.mp3'),
-				name: path.basename(file, '.mp3').split('-').join(' '),
-				url: `/audio/${file}`,
-			}))
-			.sort((a, b) => a.name.localeCompare(b.name));
+		// let count: any = await redis.get('count');
+		// if (!count) {
+		// 	const [{ count: dbCount }]: any = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
+		// 	count = dbCount;
+		// 	await redis.set('count', count);
+		// 	logger.debug(`un-cached-count`);
+		// } else {
+		// 	count = parseInt(count);
+		// 	logger.debug(`cached-count`);
+		// }
 
-		const posts = (await fs.readdir(path.resolve(path.join(process.cwd(), 'src', 'posts'))))
-			.filter((file) => file.endsWith('.md'))
-			.map((file) => ({
-				title: path.basename(file, '.md'),
-				file,
-			}))
-			.reverse();
+		let audio: any = await redis.get('audio');
+		if (!audio) {
+			const audioFiles = await fs.readdir(path.resolve(process.cwd(), 'public', 'audio'));
+			audio = audioFiles
+				.filter((file) => file.endsWith('.mp3'))
+				.map((file) => ({
+					id: path.basename(file, '.mp3'),
+					name: path.basename(file, '.mp3').split('-').join(' '),
+					url: `/audio/${file}`,
+				}))
+				.sort((a, b) => a.name.localeCompare(b.name));
+			await redis.set('audio', JSON.stringify(audio));
+			logger.debug(`un-cached-audio`);
+		} else {
+			audio = JSON.parse(audio);
+			logger.debug(`cached-audio`);
+		}
+
+		let posts: any = await redis.get('posts');
+		if (!posts) {
+			const postFiles = await fs.readdir(path.resolve(process.cwd(), 'src', 'posts'));
+			posts = postFiles
+				.filter((file) => file.endsWith('.md'))
+				.map((file) => ({
+					title: path.basename(file, '.md'),
+					file,
+				}))
+				.reverse();
+			await redis.set('posts', JSON.stringify(posts));
+			logger.debug(`un-cached-posts`);
+		} else {
+			posts = JSON.parse(posts);
+			logger.debug(`cached-posts`);
+		}
 
 		return res.render('home.html', {
 			title: 'ankle.jaw.dev',
@@ -123,13 +164,23 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 routes.get('/posts/:post', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const postPath = path.resolve(
-			path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`),
-		);
-		const data = await fs.readFile(postPath, 'utf8');
+		let posts;
+		const cachedPost = await redis.get(`posts-${req.params.post}`);
+
+		if (!cachedPost) {
+			// prettier-ignore
+			const postPath = path.resolve(path.join(process.cwd(), 'src', 'posts', `${req.params.post}.md`));
+			posts = await fs.readFile(postPath, 'utf8');
+			await redis.set(`posts-${req.params.post}`, posts);
+			logger.debug(`un-cached-post-${req.params.post}`);
+		} else {
+			posts = cachedPost;
+			logger.debug(`cached-post-${req.params.post}`);
+		}
+
 		return res.render('post.html', {
 			title: req.params.post,
-			post: marked.marked(data),
+			post: marked.marked(posts),
 			layout: '../layouts/post.html',
 			path: req.path,
 		});
