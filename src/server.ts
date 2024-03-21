@@ -19,7 +19,7 @@ server.listen(PORT, async () => {
 		setupSocketHandlers(io);
 		logger.info(`Server was started on http://localhost:${PORT}`);
 	} catch (error) {
-		logger.info('An error occurred during server start ', error);
+		logger.error('An error occurred during server start ', error);
 		process.exit(1);
 	}
 });
@@ -36,14 +36,14 @@ export async function gracefulShutdown() {
 			isShutdownCompleted = true;
 			process.exit(0);
 		} catch (err) {
-			logger.info('Shutdown error:', err);
+			logger.error('Shutdown error:', err);
 			process.exit(1);
 		}
 	};
 
 	server.close((err) => {
 		if (err) {
-			logger.info('Error closing the server:', err);
+			logger.error('Error closing the server:', err);
 			process.exit(1);
 		} else {
 			shutdownProcess();
@@ -63,5 +63,5 @@ process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 
 process.on('unhandledRejection', (reason, promise) => {
-	logger.info('Unhandled Rejection at: ', promise, ' reason: ', reason);
+	logger.error('Unhandled Rejection at: ', promise, ' reason: ', reason);
 });

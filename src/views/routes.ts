@@ -206,6 +206,7 @@ export function notFoundHandler(req: Request, res: Response, _next: NextFunction
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
 	const error = process.env.NODE_ENV === 'production' ? 'oh no, something went wrong!' : err;
+	logger.error(error);
 	return res.status(500).render('error.html', { title: 'Error', path: req.path, error });
 }
 
