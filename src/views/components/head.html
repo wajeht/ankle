@@ -14,4 +14,9 @@
 	<script src="/js/particles.min.js?v=0.3"></script>
 	<script src="/js/socket.io.min.js?v=0.2"></script>
 	<script src="/js/client.js?v=0.9"></script>
+
+	<% if (app.env === 'development') { %>
+		<script src="/js/dev.js"></script>
+	<% } %>
+
 </head>

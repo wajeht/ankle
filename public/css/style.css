@@ -561,20 +561,20 @@ video {
 	position: relative;
 }
 
-.left-\[100px\] {
-	left: 100px;
-}
-
-.top-\[300px\] {
-	top: 300px;
-}
-
 .bottom-\[300px\] {
 	bottom: 300px;
 }
 
+.left-\[100px\] {
+	left: 100px;
+}
+
 .right-\[100px\] {
 	right: 100px;
+}
+
+.top-\[300px\] {
+	top: 300px;
 }
 
 .z-\[101\] {
