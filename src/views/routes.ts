@@ -90,7 +90,7 @@ routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 		await db.count.create({ data: { ip } });
 
-		const [{ count }] = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
+		const [{ count }]: any = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
 
 		const audio = (await fs.readdir(path.resolve(path.join(process.cwd(), 'public', 'audio'))))
 			.filter((file) => file.endsWith('.mp3'))
