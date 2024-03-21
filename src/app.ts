@@ -11,7 +11,7 @@ import express, { Request, Response } from 'express';
 import expressLayouts from 'express-ejs-layouts';
 import { errorHandler, localVariables, notFoundHandler, routes } from './views/routes';
 import { rateLimit } from 'express-rate-limit';
-import { redis } from './db/db';
+import { redis } from './database/db';
 
 const redisStore = new RedisStore({
 	client: redis,

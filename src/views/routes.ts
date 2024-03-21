@@ -3,7 +3,7 @@ import marked from 'marked';
 import path from 'path';
 // @ts-ignore
 import express, { Request, Response, NextFunction } from 'express';
-import { db, redis } from '../db/db';
+import { db, redis } from '../database/db';
 import { getIPAddress, logger } from '../utils/utils';
 
 const routes = express.Router();

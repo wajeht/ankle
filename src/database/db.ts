@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { redis as redisConfig } from '../config/config';
 import Redis from 'ioredis';
+import { logger } from '../utils/utils';
 
 declare global {
 	// eslint-disable-next-line no-var
@@ -25,7 +26,7 @@ const redis = new Redis({
 });
 
 redis.on('error', (error: Error) => {
-	console.error('Error initializing Redis:', error);
+	logger.error('Error initializing Redis:', error);
 	process.exit(1);
 });
 
