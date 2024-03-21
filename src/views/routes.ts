@@ -86,10 +86,21 @@ routes.get('/gallery', (req: Request, res: Response) => {
 
 routes.get('/', async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const ip = await getIPAddress();
-		await db.count.create({ data: { ip } });
+		const clientIp = await getIPAddress();
+		await db.count.create({ data: { ip: clientIp } });
 
 		const [{ count }]: any = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
+
+		// let count: any = await redis.get('count');
+		// if (!count) {
+		// 	const [{ count: dbCount }]: any = await db.$queryRaw`SELECT COUNT(*) AS count FROM counts`;
+		// 	count = dbCount;
+		// 	await redis.set('count', count);
+		// 	logger.debug(`un-cached-count`);
+		// } else {
+		// 	count = parseInt(count);
+		// 	logger.debug(`cached-count`);
+		// }
 
 		let audio: any = await redis.get('audio');
 		if (!audio) {
