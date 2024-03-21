@@ -3,6 +3,7 @@ import cors from 'cors';
 import compression from 'compression';
 import session from 'express-session';
 import flash from 'connect-flash';
+import RedisStore from 'connect-redis';
 import ejs from 'ejs';
 import path from 'path';
 // @ts-ignore
@@ -10,6 +11,12 @@ import express, { Request, Response } from 'express';
 import expressLayouts from 'express-ejs-layouts';
 import { errorHandler, localVariables, notFoundHandler, routes } from './views/routes';
 import { rateLimit } from 'express-rate-limit';
+import { redis } from './db/db';
+
+const redisStore = new RedisStore({
+	client: redis,
+	prefix: 'ankle-session-store:',
+});
 
 const app = express();
 
@@ -55,6 +62,7 @@ app.use(
 	session({
 		secret: process.env.SESSION_SECRET!,
 		resave: false,
+		store: redisStore,
 		saveUninitialized: true,
 		proxy: process.env.NODE_ENV === 'production',
 		cookie: {
