@@ -22,6 +22,7 @@
 		setTimeout(() => {
 			const selectedTrack = audio[Math.floor(Math.random() * audio.length)];
 			document.getElementById('music').src = selectedTrack.url;
+			document.getElementById('music').play();
 		}, 100);
 
 		// play a song
