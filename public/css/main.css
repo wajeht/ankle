@@ -72,30 +72,10 @@ figcaption {
 	text-align: center;
 }
 
-header {
-	flex-grow: 0;
-	text-align: center;
-
-	padding: 20px;
-
-	color: white;
-	background-color: rgba(0, 0, 0, 0.5); /* 50% transparent back */
-}
-
 main {
 	flex-grow: 1;
 	background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white */
 	padding: 20px;
-}
-
-footer {
-	flex-grow: 0;
-	text-align: center;
-
-	padding: 20px;
-
-	color: white;
-	background-color: rgba(0, 0, 0, 0.5); /* 50% transparent back */
 }
 
 a {

@@ -1,49 +1,5 @@
-<div>
-	<div
-		id="pointing"
-		class="animate__animated animate__fadeInDownBig"
-		style="position: fixed; z-index: 100; bottom: 100px; right: 0"
-	>
-		<img src="/img/etc/pointing.gif" alt="pointing" />
-		<p class="rainbow-text" style="background-color: orange; padding: 10px; border-radius: 10px">
-			Please sign my GUEST BOOK!
-		</p>
-	</div>
-
-	<h2>📖 Guest book</h2>
-	<hr />
-	<!-- flash -->
-	<%- include('../components/flash-messages.html') %>
-
-	<form action="/guest-book" method="post">
-		<div style="visibility: hidden; height: 0; width: 0;">
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name" />
-		</div>
-
-		<div>
-			<label for="name">Message</label>
-			<input type="text" name="message" id="message" />
-		</div>
-
-		<input type="submit" value="Sign" />
-	</form>
-
-	<div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px">
-		<% for (let i=0; i < users.length; i++) { %>
-		<div style="display: flex; flex-direction: column">
-			<div style="display: flex; align-items: center; gap: 5px">
-				<h4 style="margin: 0 5px"><%= users[i].emoji %></h4>
-				<small> <%= users[i].created_at %> </small>
-			</div>
-			<p><%= users[i].message %></p>
-		</div>
-		<% } %>
-	</div>
-</div>
 
 <script src="/js/confetti.browser.min.js?v=0.1"></script>
-
 <script>
 	async function getUserIp() {
 		return (
@@ -91,3 +47,46 @@
 		document.getElementById('name').value = ip.ip;
 	});
 </script>
+
+<div>
+	<div
+		id="pointing"
+		class="animate__animated animate__fadeInDownBig fixed z-50 bottom-16 right-0"
+	>
+		<img src="/img/etc/pointing.gif" alt="pointing" />
+		<p class="rainbow-text bg-orange-500 p-4 rounded-lg">
+			Please sign my GUEST BOOK!
+		</p>
+	</div>
+
+	<h2>📖 Guest book</h2>
+	<hr />
+	<!-- flash -->
+	<%- include('../components/flash-messages.html') %>
+
+	<form action="/guest-book" method="post">
+		<div class="hidden h-0 w-0">
+			<label for="name">Name</label>
+			<input type="text" name="name" id="name" />
+		</div>
+
+		<div>
+			<label for="name">Message</label>
+			<input type="text" name="message" id="message" />
+		</div>
+
+		<input type="submit" value="Sign" />
+	</form>
+
+	<div class="flex flex-col gap-20 mt-20">
+		<% for (let i=0; i < users.length; i++) { %>
+		<div class="flex flex-col">
+			<div class="flex items-center gap-5">
+				<h4 class="m-0 mr-5"><%= users[i].emoji %></h4>
+				<small><%= users[i].created_at %></small>
+			</div>
+			<p><%= users[i].message %></p>
+		</div>
+		<% } %>
+	</div>
+</div>
