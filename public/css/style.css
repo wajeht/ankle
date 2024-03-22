@@ -683,6 +683,10 @@ video {
 	gap: 1.25rem;
 }
 
+.overflow-x-hidden {
+	overflow-x: hidden;
+}
+
 .whitespace-pre-wrap {
 	white-space: pre-wrap;
 }
@@ -703,6 +707,11 @@ video {
 .bg-orange-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgb(249 115 22 / var(--tw-bg-opacity));
+}
+
+.bg-white {
+	--tw-bg-opacity: 1;
+	background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -735,131 +744,4 @@ video {
 	font-family:
 		Comic Sans MS,
 		Comic Sans;
-}
-
-.rainbow-text {
-	font-weight: bold;
-	animation: rainbow 5s infinite;
-}
-
-/* .active {
-	font-weight: bold;
-	animation: rainbow 5s infinite;
-}
-
-a:hover {
-	text-decoration: underline;
-	animation: rainbow 5s infinite;
-} */
-
-/*
-body {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-
-	min-height: 100vh;
-	width: 800px;
-
-	overflow-x: hidden;
-
-	margin: 0px 20px 0px 20px;
-
-	animation: rainbowGlow 5s infinite;
-
-	-webkit-font-smoothing: antialiased;
-} */
-
-#particles-js {
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	min-height: 100vh;
-	min-width: 100vw;
-}
-
-*:not(#particles-js) {
-	z-index: 99;
-}
-
-@keyframes moveBirdRight {
-	0% {
-		left: 0;
-	}
-
-	100% {
-		left: calc(100% - 100px);
-	}
-}
-
-@keyframes moveBirdLeft {
-	0% {
-		left: calc(100% - 100px);
-	}
-
-	100% {
-		left: 0;
-	}
-}
-
-@keyframes rainbow {
-	0% {
-		color: #ff0000;
-	}
-
-	16% {
-		color: #ff7f00;
-	}
-
-	32% {
-		color: #ffff00;
-	}
-
-	48% {
-		color: #00ff00;
-	}
-
-	64% {
-		color: #0000ff;
-	}
-
-	80% {
-		color: #4b0082;
-	}
-
-	100% {
-		color: #8a2be2;
-	}
-}
-
-@keyframes rainbowGlow {
-	0% {
-		box-shadow: 0 0 10px 10px #ff0000;
-	}
-
-	16% {
-		box-shadow: 0 0 8px 2px #ff7f00;
-	}
-
-	32% {
-		box-shadow: 0 0 10px 10px #ffff00;
-	}
-
-	48% {
-		box-shadow: 0 0 8px 2px #00ff00;
-	}
-
-	64% {
-		box-shadow: 0 0 10px 10px #0000ff;
-	}
-
-	80% {
-		box-shadow: 0 0 8px 2px #4b0082;
-	}
-
-	100% {
-		box-shadow: 0 0 10px 10px #8a2be2;
-	}
 }
