@@ -21,11 +21,6 @@ J:::::::JJJ:::::::J     A:::::A             A:::::A            W:::::::W       W
 
 
 	`);
-	// particlejs
-	particlesJS.load('particles-js', '/js/particlesjs-config.json', function() {
-  	// console.log('callback - particles.js config loaded');
-	});
-
 	// https://codepen.io/incompl/pen/DQOdLv
 	window.addEventListener(
 		'mousemove',
