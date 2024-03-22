@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "CommonJS",
 		"rootDir": "./",
 		"baseUrl": "./src",
 		"resolveJsonModule": true,
@@ -11,7 +10,13 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"incremental": true,
+		"noUncheckedIndexedAccess": true,
 		"removeComments": true,
+		"moduleResolution": "NodeNext",
+		"module": "NodeNext",
+		"allowJs": true,
+		"moduleDetection": "force",
+		"isolatedModules": true,
 		"typeRoots": ["./node_modules/@types/node", "node"]
 	},
 	"include": ["./src/**/*.ts", ".env"],

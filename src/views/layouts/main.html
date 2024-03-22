@@ -3,14 +3,18 @@
 	<!-- head -->
 	<%- include('../components/head.html') %>
 
-	<div id="particles-js"></div>
-	<body>
+	<body class="flex flex-col min-h-screen relative w-screen bg-black overflow-x-hidden">
+		<!-- partial-js -->
+		<!-- <div id="particles-js" class="absolute z-0"></div> -->
+
+		<!-- animated gif -->
+		<%- include('../components/background-gif.html') %>
+
 		<!-- header -->
 		<%- include('../components/header.html') %>
 
-		<%- include('../components/background-gif.html') %>
-
-		<main>
+		<!-- main -->
+		<main class="flex-1 h-full bg-white bg-opacity-50 p-5 max-w-[800px] m-auto w-full">
 			<!-- pages -->
 			<%- body %>
 		</main>

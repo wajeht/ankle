@@ -1,10 +1,61 @@
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const bird = document.querySelector('.flying-bird');
+		bird.addEventListener('click', function () {
+			const kakarrrDiv = document.createElement('div');
+			kakarrrDiv.id = 'kakarrr';
+			kakarrrDiv.textContent = 'kakarrr';
+			kakarrrDiv.style.position = 'absolute';
+			kakarrrDiv.style.backgroundColor = 'red';
+			kakarrrDiv.style.color = 'white';
+			kakarrrDiv.style.padding = '5px';
+			kakarrrDiv.style.borderRadius = '10px';
+			kakarrrDiv.style.zIndex = '300';
+			kakarrrDiv.style.fontSize = '11px';
+			kakarrrDiv.style.top = '-30px';
+			bird.appendChild(kakarrrDiv);
+		});
+
+		let isMovingRight = true; // Initial direction is right.
+
+		const windowHeight = window.innerHeight;
+		const randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
+		bird.style.top = randomTopPosition;
+
+		function updateBirdAnimation() {
+			// Calculate random top position
+			const windowHeight = window.innerHeight;
+			const randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
+			bird.style.top = randomTopPosition;
+
+			// Toggle direction
+			isMovingRight = !isMovingRight;
+
+			// Apply the appropriate animation based on the new direction
+			if (isMovingRight) {
+				bird.style.animationName = 'moveBirdRight';
+				bird.style.transform = 'scaleX(1)'; // Bird facing right
+			} else {
+				bird.style.animationName = 'moveBirdLeft';
+				bird.style.transform = 'scaleX(-1)'; // Bird facing left
+			}
+		}
+
+		bird.addEventListener('animationiteration', updateBirdAnimation);
+	});
+</script>
+
 <!-- spinning  -->
-<div style="position: absolute; top: 300px; z-index: 101; left: 100px;">
+<div class="absolute top-[300px] z-[101] left-[100px]">
 	<img src="/img/etc/spinning-earth.gif" alt="spinning-earth">
 </div>
 
-
 <!-- spinning  -->
-<div style="position: absolute; bottom: 300px; z-index: 101; right: 100px;">
+<div class="absolute bottom-[300px] z-[101] right-[100px]">
 	<img src="/img/etc/bright-earth.gif" alt="bright-earth">
+</div>
+
+<!-- flying bird -->
+<div class="z-50 w-50 h-50 fixed animate-moveBirdRight">
+	<img width="100" src="/img/etc/flying_bird.gif" alt="flying-bird" />
 </div>

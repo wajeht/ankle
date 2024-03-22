@@ -1,105 +1,26 @@
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
-		const bird = document.querySelector('.flying-bird');
-		bird.addEventListener('click', function () {
-			const kakarrrDiv = document.createElement('div');
-			kakarrrDiv.id = 'kakarrr';
-			kakarrrDiv.textContent = 'kakarrr';
-			kakarrrDiv.style.position = 'absolute';
-			kakarrrDiv.style.backgroundColor = 'red';
-			kakarrrDiv.style.color = 'white';
-			kakarrrDiv.style.padding = '5px';
-			kakarrrDiv.style.borderRadius = '10px';
-			kakarrrDiv.style.zIndex = '300';
-			kakarrrDiv.style.fontSize = '11px';
-			kakarrrDiv.style.top = '-30px';
-			bird.appendChild(kakarrrDiv);
-		});
+<!-- header -->
+<header class="flex-grow-0 flex justify-center flex-col items-center text-white bg-black bg-opacity-50 p-5 gap-5 max-w-[800px] m-auto w-full">
 
-		let isMovingRight = true; // Initial direction is right.
+	<!-- image -->
+	<a href="/">
+		<img src="/img/etc/broken-ankle.gif" alt="broken ankle" />
+	</a>
 
-		const windowHeight = window.innerHeight;
-		const randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
-		bird.style.top = randomTopPosition;
+	<!-- description -->
+	<marquee class="w-[300px]">
+		<%= app.description %>
+	</marquee>
 
-		function updateBirdAnimation() {
-			// Calculate random top position
-			const windowHeight = window.innerHeight;
-			const randomTopPosition = Math.floor(Math.random() * (windowHeight - 100)) + 'px';
-			bird.style.top = randomTopPosition;
-
-			// Toggle direction
-			isMovingRight = !isMovingRight;
-
-			// Apply the appropriate animation based on the new direction
-			if (isMovingRight) {
-				bird.style.animationName = 'moveBirdRight';
-				bird.style.transform = 'scaleX(1)'; // Bird facing right
-			} else {
-				bird.style.animationName = 'moveBirdLeft';
-				bird.style.transform = 'scaleX(-1)'; // Bird facing left
-			}
-		}
-
-		bird.addEventListener('animationiteration', updateBirdAnimation);
-	});
-</script>
-
-<div style="position: relative">
-	<!-- header -->
-	<header>
-		<a href="/" style="display: flex; justify-content: center">
-			<img src="/img/etc/broken-ankle.gif" alt="broken ankle" />
-		</a>
-		<marquee width="250"><%= app.description %></marquee>
-
-		<!-- nav -->
-		<nav>
-			<ul>
-				<li><a href="/" class="<%- path === '/' ? 'active' : ''%>">🏠 home</a></li>
-				|
-				<li>
-					<a href="/guest-book" class="<%- path === '/guest-book' ? 'active' : ''%>"
-						>📖 guest book</a
-					>
-				</li>
-				|
-				<li><a href="/gallery" class="<%- path === '/gallery' ? 'active' : ''%>">🖼️ gallery</a></li>
-			</ul>
-		</nav>
-	</header>
-
-	<div class="flying-bird">
-		<img width="100" src="/img/etc/flying_bird.gif" alt="" />
-	</div>
-</div>
-
-<style>
-	.flying-bird {
-		z-index: 300 !important;
-		width: 50px;
-		height: 50px;
-		position: fixed;
-		animation: moveBirdRight 60s linear infinite;
-	}
-
-	@keyframes moveBirdRight {
-		0% {
-			left: 0;
-		}
-
-		100% {
-			left: calc(100% - 100px);
-		}
-	}
-
-	@keyframes moveBirdLeft {
-		0% {
-			left: calc(100% - 100px);
-		}
-
-		100% {
-			left: 0;
-		}
-	}
-</style>
+	<!-- nav -->
+	<nav>
+		<ul class="flex gap-5">
+			<li><a href="/" class="<%- path === '/' ? 'active' : ''%>">🏠 home</a></li>
+			|
+			<li>
+				<a href="/guest-book" class="<%- path === '/guest-book' ? 'active' : ''%>">📖 guest book</a>
+			</li>
+			|
+			<li><a href="/gallery" class="<%- path === '/gallery' ? 'active' : ''%>">🖼️ gallery</a></li>
+		</ul>
+	</nav>
+</header>
