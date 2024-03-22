@@ -59,8 +59,10 @@
 		</p>
 	</div>
 
+	<!-- title -->
 	<h2>📖 Guest book</h2>
 	<hr />
+
 	<!-- flash -->
 	<%- include('../components/flash-messages.html') %>
 
@@ -78,14 +80,19 @@
 		<input type="submit" value="Sign" />
 	</form>
 
-	<div class="flex flex-col gap-20 mt-20">
+	<!-- msg list -->
+	<div class="flex flex-col gap-5">
 		<% for (let i=0; i < users.length; i++) { %>
 		<div class="flex flex-col">
-			<div class="flex items-center gap-5">
-				<h4 class="m-0 mr-5"><%= users[i].emoji %></h4>
-				<small><%= users[i].created_at %></small>
+
+			<!-- head -->
+			<div class="flex items-center">
+				<h4 class="mr-2 text-2xl"><%= users[i].emoji %></h4>
+				<small class="font-light"><%= users[i].created_at %></small>
 			</div>
-			<p><%= users[i].message %></p>
+
+			<!-- msg -->
+			<p class="font-medium"><%= users[i].message %></p>
 		</div>
 		<% } %>
 	</div>
